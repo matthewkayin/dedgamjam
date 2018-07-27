@@ -6,7 +6,7 @@ int main(int argc, cont char *argv[])
 {
 	game = new Game();
 	
-	game->inti(/*enter parameters here*/)
+	game->init(/*enter parameters here*/)
 	
 	while(game->running())
 	{
