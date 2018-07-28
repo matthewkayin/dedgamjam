@@ -12,12 +12,21 @@ class Level{
 public:
     Level();
     Level(int screenwidth, int screenheight);
+
+    void update(int delta);
+
     int getCameraXOffset() const;
     int getCameraYOffset() const;
+    void setCameraXSpeed(int value);
+    void setCameraYSpeed(int value);
+    int getCameraSpeed() const;
+
     Chunk* getChunkFromPosition(int x, int y);
 
     void setPlayerSpeedX(int value);
     void setPlayerSpeedY(int value);
+
+    Player getPlayer();
 
 private:
     Chunk* base;
@@ -25,6 +34,9 @@ private:
     int chunkheight;
     int cameraxOffset;
     int camerayOffset;
+    int cameraxSpeed;
+    int cameraySpeed;
+    int cameraSpeed;
     Player player;
 };
 

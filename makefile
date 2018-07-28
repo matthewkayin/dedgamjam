@@ -8,7 +8,7 @@ RDIR = rel
 DDIR = dbg
 IDIR = include
 
-SRCS = main.cpp renderer.cpp texture.cpp Entity.cpp Player.cpp
+SRCS = main.cpp renderer.cpp texture.cpp Entity.cpp Player.cpp level.cpp chunk.cpp
 OBJS = $(SRCS:%.cpp=%.o)
 RLS = $(addprefix $(RDIR)/, $(OBJS))
 DBG = $(addprefix $(DDIR)/, $(OBJS))

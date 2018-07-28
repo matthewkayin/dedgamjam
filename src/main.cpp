@@ -11,8 +11,9 @@
 void input();
 void update(int delta);
 void render();
+void renderChunk(Chunk *toRender);
 
-Texture grass;
+Texture grassT;
 Texture playerT;
 
 Renderer renderer;
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
-    grass.import(renderer.getRenderer(), "res/gfx/grass.png");
+    grassT.import(renderer.getRenderer(), "res/gfx/grass.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -142,26 +143,50 @@ void input(){
 
     //scancodes and keyboard state are for figuring out which keys are being held in
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
-    int playerSpeed = 20;
-    
+
     if (state[SDLK_w])
-        level.setPlayerSpeedY(-playerSpeed);
+        level.setPlayerSpeedY(-level.getPlayer().getPlayerSpeed());
     else{
         if (state[SDLK_s])
-            level.setPlayerSpeedY(playerSpeed);
+            level.setPlayerSpeedY(level.getPlayer().getPlayerSpeed());
         else
             level.setPlayerSpeedY(0);
     }
-    
+
     if (state[SDLK_a])
-        level.setPlayerSpeedX(-playerSpeed);
+        level.setPlayerSpeedX(-level.getPlayer().getPlayerSpeed());
     else{
         if (state[SDLK_d])
-            level.setPlayerSpeedX(playerSpeed);
+            level.setPlayerSpeedX(level.getPlayer().getPlayerSpeed());
         else
             level.setPlayerSpeedX(0);
     }
 
+    if(state[SDLK_UP]){
+
+        level.setCameraYSpeed(-level.getCameraSpeed());
+
+    }else if(state[SDLK_DOWN]){
+
+        level.setCameraYSpeed(level.getCameraSpeed());
+
+    }else{
+
+        level.setCameraYSpeed(0);
+    }
+
+    if(state[SDLK_LEFT]){
+
+        level.setCameraXSpeed(-level.getCameraSpeed());
+
+    }else if(state[SDLK_RIGHT]){
+
+        level.setCameraXSpeed(level.getCameraSpeed());
+
+    }else{
+
+        level.setCameraXSpeed(0);
+    }
 }
 
 void update(int delta){
@@ -173,13 +198,49 @@ void render(){
 
     renderer.clear();
 
+    Chunk *curr = level.getChunkFromPosition(level.getCameraXOffset(), level.getCameraYOffset());
+    renderChunk(curr);
+    if(curr->getX() > level.getCameraXOffset()){
+
+        renderChunk(curr->getLeft());
+
+    }else if(curr->getX() < level.getCameraXOffset()){
+
+        renderChunk(curr->getRight());
+    }
+    if(curr->getY() > level.getCameraYOffset()){
+
+        renderChunk(curr->getUp());
+
+    }else if(curr->getY() < level.getCameraYOffset()){
+
+        renderChunk(curr->getDown());
+    }
+
+    renderer.render();
+    frames++;
+}
+
+void renderChunk(Chunk *toRender){
+
+    if(toRender == nullptr){
+
+        std::cout << "Error! Attempting to render a null chunk!" << std::endl;
+        return;
+    }
+
     //draw the ground
     int dx = 0;
     int dy = 0;
 
-    for(int i = 0; i < (renderer.getScreenWidth() * renderer.getScreenHeight()) / 64; i++){
+    for(int i = 0; i < (renderer.getScreenWidth() * renderer.getScreenHeight()) / grassT.getWidth(); i++){
 
-        renderer.drawImage(grass.getImage(), dx, dy, grass.getHeight(), grass.getHeight());
+        int xpoint = dx + toRender->getX() - level.getCameraXOffset();
+        int ypoint = dy + toRender->getY() - level.getCameraYOffset();
+        if(xpoint >= 0 && xpoint <= renderer.getScreenWidth() && ypoint >= 0 && ypoint <= renderer.getScreenHeight()){
+
+            renderer.drawImage(grassT.getImage(), xpoint, ypoint, grassT.getWidth(), grassT.getHeight());
+        }
 
         dx += 64;
         if(dx >= renderer.getScreenWidth()){
@@ -188,7 +249,4 @@ void render(){
             dy += 64;
         }
     }
-
-    renderer.render();
-    frames++;
 }

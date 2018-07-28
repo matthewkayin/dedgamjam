@@ -11,7 +11,6 @@
 class Entity {
 public:
     Entity();
-    ~Entity();
 
     void updatePosition(int delta);
 

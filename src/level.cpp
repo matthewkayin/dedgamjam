@@ -1,7 +1,7 @@
 #include "level.hpp"
 
 Level::Level(){
-    
+
 }
 
 Level::Level(int screenwidth, int screenheight){
@@ -11,9 +11,20 @@ Level::Level(int screenwidth, int screenheight){
     camerayOffset = 0;
     chunkwidth = screenwidth;
     chunkheight = screenheight;
-    
+    cameraSpeed = 3;
+    cameraxSpeed = 0;
+    cameraySpeed = 0;
+
     player.setX((screenwidth + player.getWidth()) / 2);
     player.setY((screenheight + player.getHeight()) / 2);
+}
+
+void Level::update(int delta){
+
+    player.updatePosition(delta);
+
+    cameraxOffset += (cameraxSpeed * delta);
+    camerayOffset += (cameraySpeed * delta);
 }
 
 Chunk* Level::getChunkFromPosition(int x, int y){
@@ -58,11 +69,16 @@ int Level::getCameraYOffset() const{
 }
 
 void Level::setPlayerSpeedX(int value){
-    
+
     player.setDx(value);
 }
 
 void Level::setPlayerSpeedY(int value){
-    
+
     player.setDy(value);
+}
+
+Player Level::getPlayer(){
+
+    return player;
 }
