@@ -68,6 +68,7 @@ int main(int argc, char* argv[]){
     Uint32 loopStart = 0;
     Uint32 loopDump = 0;
     Uint32 secDump = 0;
+    Uint32 releaseMonster = 0;
 
     fpsText.import(renderer.getRenderer(), "FPS: " + std::to_string(fps), "monospace.ttf", 16, SDL_Color{0, 255, 0});
     upsText.import(renderer.getRenderer(), "UPS: " + std::to_string(ups), "monospace.ttf", 16, SDL_Color{0, 255, 0});
@@ -115,6 +116,12 @@ int main(int argc, char* argv[]){
             The update timer works based off of how much updates should have occured so we need the
             start time to happen here
         */
+        
+        if((currentTime - releaseMonster) >= 3000){
+            releaseMonster = currentTime;
+            level.createMonster();
+        }
+        
         loopStart = SDL_GetTicks();
 
         //actual calling of game functions
@@ -245,18 +252,18 @@ void render(){
     } */
 
     float playerAngle = getPlayerAngle();
+    
+    Monster* hold = level.getMonsterArray();
+    for(int i=0; i<100; i++){
+        
+        if(hold[i].beingUsed())
+            renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+    }
 
     renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth(), playerAngle);
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
     
-    Monster* traverse = level.getMonsterList();
-    do{
-        renderer.drawImage(handRockT.getImage(), traverse->getX(), traverse->getY(), handRockT.getHeight(), handRockT.getWidth());
-        traverse->setTail(traverse->getTail());
-        
-    } while (traverse != nullptr);
-
     if(displayFPS){
 
         renderer.drawImage(fpsText.getImage(), 0, 0, fpsText.getWidth(), fpsText.getHeight());

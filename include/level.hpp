@@ -13,6 +13,7 @@ class Level{
 public:
     Level();
     Level(int screenwidth, int screenheight);
+    ~Level();
 
     void update(int delta);
 
@@ -22,12 +23,11 @@ public:
     void setCameraYSpeed(int value);
     int getCameraSpeed() const;
     void createMonster();
-    void killMonster(Monster* deadMonster);
+    Monster* getMonsterArray();
 
     Chunk* getChunkFromPosition(int x, int y);
 
     Player* getPlayer();
-    Monster* getMonsterList();
 
 private:
     Chunk* base;
@@ -39,7 +39,7 @@ private:
     int cameraySpeed;
     int cameraSpeed;
     Player player;
-    Monster* monsters;
+    Monster monsterArray[100];
 };
 
 #endif
