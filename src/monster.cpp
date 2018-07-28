@@ -10,6 +10,8 @@
 
 Monster::Monster()
 {
+    head = nullptr;
+    tail = nullptr;
     setDx(0);
     setDy(0);
     health = 3;
@@ -18,31 +20,31 @@ Monster::Monster()
 }
 
 int Monster::getHealth(){
-    
+
     return health;
 }
 
 Monster* Monster::getHead(){
-    
+
     return head;
 }
 
 Monster* Monster::getTail(){
-    
+
     return tail;
 }
 
 void Monster::setHealth(int value){
-    
+
     health = value;
 }
 
 void Monster::setHead(Monster* newHead){
-    
+
     head = newHead;
 }
 
 void Monster::setTail(Monster* newTail){
-    
+
     tail = newTail;
 }

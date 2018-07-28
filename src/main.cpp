@@ -30,6 +30,8 @@ Level level;
 
 int mousex;
 int mousey;
+int recentY = 0;
+int recentX = 0;
 
 int updates;
 int frames;
@@ -158,6 +160,22 @@ void input(){
                 case SDLK_F11:
                     renderer.toggleFullscreen();
                     break;
+
+                case SDLK_w:
+                    recentY = -1;
+                    break;
+
+                case SDLK_s:
+                    recentY = 1;
+                    break;
+
+                case SDLK_a:
+                    recentX = -1;
+                    break;
+
+                case SDLK_d:
+                    recentX = 1;
+                    break;
             }
         }
     }
@@ -165,22 +183,40 @@ void input(){
     //scancodes and keyboard state are for figuring out which keys are being held in
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
-    if (state[SDL_SCANCODE_W])
-        level.getPlayer()->setDy(-level.getPlayer()->getPlayerSpeed());
-    else{
-        if (state[SDL_SCANCODE_S])
-            level.getPlayer()->setDy(level.getPlayer()->getPlayerSpeed());
-        else
-            level.getPlayer()->setDy(0);
+    std::cout << recentX << std::endl;
+
+    if (state[SDL_SCANCODE_W] && state[SDL_SCANCODE_S]){
+
+        level.getPlayer()->setDy(recentY * level.getPlayer()->getSpeed());
+
+    }else if(state[SDL_SCANCODE_W]){
+
+        level.getPlayer()->setDy(-level.getPlayer()->getSpeed());
+
+    }else if(state[SDL_SCANCODE_S]){
+
+        level.getPlayer()->setDy(level.getPlayer()->getSpeed());
+
+    }else{
+
+        level.getPlayer()->setDy(0);
     }
 
-    if (state[SDL_SCANCODE_A])
-        level.getPlayer()->setDx(-level.getPlayer()->getPlayerSpeed());
-    else{
-        if (state[SDL_SCANCODE_D])
-            level.getPlayer()->setDx(level.getPlayer()->getPlayerSpeed());
-        else
-            level.getPlayer()->setDx(0);
+    if (state[SDL_SCANCODE_A] && state[SDL_SCANCODE_D]){
+
+        level.getPlayer()->setDx(recentX * level.getPlayer()->getSpeed());
+
+    }else if(state[SDL_SCANCODE_A]){
+
+        level.getPlayer()->setDx(-level.getPlayer()->getSpeed());
+
+    }else if(state[SDL_SCANCODE_D]){
+
+        level.getPlayer()->setDx(level.getPlayer()->getSpeed());
+
+    }else{
+
+        level.getPlayer()->setDx(0);
     }
 
     if(state[SDL_SCANCODE_UP]){
