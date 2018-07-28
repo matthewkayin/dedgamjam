@@ -1,7 +1,7 @@
 #include "level.hpp"
 
 Level::Level(){
-    
+
 }
 
 void Level::setPlayerSpeedX(int value){
