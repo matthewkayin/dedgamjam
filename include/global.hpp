@@ -11,10 +11,9 @@ inline float toRadians(float degree){
 }
 
 enum ImgCode{
+    GRASS,
     PLAYER,
-    MONSTER,
-    BOSS,
-    BACKGROUND
+    BULLET
 };
 
 #endif
