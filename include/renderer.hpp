@@ -26,7 +26,9 @@ public:
     };
 
     Renderer();
+    ~Renderer();
     bool initGFX(std::string title, int width, int height);
+    void toggleFullscreen();
 
     //rendering commands to use in main file's render function
     void clear();
@@ -56,6 +58,7 @@ public:
 private:
     SDL_Renderer *renderer;
     SDL_Window *window;
+    bool isFullscreen;
 
     int SCREEN_WIDTH;
     int SCREEN_HEIGHT;

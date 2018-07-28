@@ -17,6 +17,10 @@ bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int yt
 
 Texture grassT;
 Texture playerT;
+Texture fpsText;
+Texture upsText;
+
+bool displayFPS = false;
 
 Renderer renderer;
 Level level;
@@ -28,7 +32,7 @@ bool running;
 int main(int argc, char* argv[]){
 
     //Init the renderer, exit program if initialization failed
-    if(!renderer.initGFX("Raycasting", 1280, 768)){
+    if(!renderer.initGFX("Raycasting", 1280, 720)){
 
         return 0;
     }
@@ -40,9 +44,7 @@ int main(int argc, char* argv[]){
 
     //timing constants
     const Uint32 SECOND = 1000;
-    const Uint32 TARGET_FPS = 90;
     const Uint32 TARGET_UPS = 60;
-    const Uint32 FRAME_TIME = SECOND / TARGET_FPS;
     const Uint32 UPDATE_TIME = SECOND / TARGET_UPS;
 
     //timing variables
@@ -55,14 +57,14 @@ int main(int argc, char* argv[]){
     Uint32 currentTime = 0;
     Uint32 secStart = 0;
     Uint32 loopStart = 0;
-    Uint32 frameStart = 0;
     Uint32 loopDump = 0;
     Uint32 secDump = 0;
-    Uint32 sleepTime = 0;
+
+    fpsText.import(renderer.getRenderer(), "FPS: " + std::to_string(fps), "monospace.ttf", 16, SDL_Color{0, 255, 0});
+    upsText.import(renderer.getRenderer(), "UPS: " + std::to_string(ups), "monospace.ttf", 16, SDL_Color{0, 255, 0});
 
     loopStart = SDL_GetTicks();
     secStart = loopStart;
-    frameStart = loopStart;
 
     running = true;
 
@@ -80,18 +82,6 @@ int main(int argc, char* argv[]){
         loopDump = timeDiff - (delta * UPDATE_TIME);
 
         /*
-            for frames we figure how out much time, if any, we have in excess of the
-            desired frame time. If our frame rendering was a shorter amount of time than
-            the target, we sleep to stay on target. If our render time was longer we don't
-            sleep since we're already falling behind schedule
-        */
-        timeDiff = currentTime - frameStart;
-        if(TARGET_FPS != 0 && timeDiff < FRAME_TIME){
-
-            sleepTime = FRAME_TIME - timeDiff;
-        }
-
-        /*
             check if a second has passed. If it has, record the fps and ups as being the
             amount of frames/updates that happened in the past second, then print the result
         */
@@ -105,7 +95,8 @@ int main(int argc, char* argv[]){
             frames = 0;
             secStart = SDL_GetTicks();
 
-            std::cout << "FPS: " << fps << " UPS: " << ups << std::endl;
+            fpsText.import(renderer.getRenderer(), "FPS: " + std::to_string(fps), "monospace.ttf", 16, SDL_Color{0, 255, 0});
+            upsText.import(renderer.getRenderer(), "UPS: " + std::to_string(ups), "monospace.ttf", 16, SDL_Color{0, 255, 0});
         }
 
         /*
@@ -117,16 +108,16 @@ int main(int argc, char* argv[]){
         */
         loopStart = SDL_GetTicks();
 
-        SDL_Delay(sleepTime);
-        sleepTime = 0;
-
-        frameStart = SDL_GetTicks();
-
         //actual calling of game functions
         input();
         update(delta);
         render();
     }
+
+    grassT.free();
+    playerT.free();
+    fpsText.free();
+    upsText.free();
 
     return 0;
 }
@@ -141,6 +132,20 @@ void input(){
         if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)){
 
             running = false;
+        }
+
+        if(e.type == SDL_KEYDOWN){
+
+            switch(e.key.keysym.sym){
+
+                case SDLK_F1:
+                    displayFPS = !displayFPS;
+                    break;
+
+                case SDLK_F11:
+                    renderer.toggleFullscreen();
+                    break;
+            }
         }
     }
 
@@ -224,6 +229,12 @@ void render(){
     } */
 
     renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth());
+
+    if(displayFPS){
+
+        renderer.drawImage(fpsText.getImage(), 0, 0, fpsText.getWidth(), fpsText.getHeight());
+        renderer.drawImage(upsText.getImage(), 0, 16, upsText.getWidth(), upsText.getHeight());
+    }
 
     renderer.render();
     frames++;
