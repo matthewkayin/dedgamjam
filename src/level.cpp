@@ -30,12 +30,7 @@ Chunk* Level::getChunkFromPosition(int x, int y){
     }
 }
 
-void Level::setPlayerSpeedX(int value){
+Player Level::getPlayer(){
     
-    player.setDx(value);
-}
-
-void Level::setPlayerSpeedY(int value){
-    
-    player.setDy(value);
+    return player;
 }

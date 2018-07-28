@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
     }
 
     grass.import(renderer.getRenderer(), "res/gfx/grass.png");
+    playerT.import(renderer.getRenderer(), "res/gfx/fingergun.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -145,21 +146,21 @@ void input(){
     int playerSpeed = 20;
     
     if (state[SDLK_w])
-        level.setPlayerSpeedY(-playerSpeed);
+        level.getPlayer().setDy(-playerSpeed);
     else{
         if (state[SDLK_s])
-            level.setPlayerSpeedY(playerSpeed);
+            level.getPlayer().setDy(playerSpeed);
         else
-            level.setPlayerSpeedY(0);
+            level.getPlayer().setDy(0);
     }
     
     if (state[SDLK_a])
-        level.setPlayerSpeedX(-playerSpeed);
+        level.getPlayer().setDx(-playerSpeed);
     else{
         if (state[SDLK_d])
-            level.setPlayerSpeedX(playerSpeed);
+            level.getPlayer().setDx(playerSpeed);
         else
-            level.setPlayerSpeedX(0);
+            level.getPlayer().setDx(0);
     }
 
 }
@@ -188,6 +189,8 @@ void render(){
             dy += 64;
         }
     }
+    
+    renderer.drawImage(level.getPlayer().getImageCode(), level.getPlayer().getX(), level.getPlayer().getY(), playerT.getHeight(), playerT.getWidth());
 
     renderer.render();
     frames++;

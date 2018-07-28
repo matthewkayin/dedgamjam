@@ -15,9 +15,9 @@ public:
     int getCameraXOffset() const;
     int getCameraYOffset() const;
     Chunk* getChunkFromPosition(int x, int y);
-
-    void setPlayerSpeedX(int value);
-    void setPlayerSpeedY(int value);
+    
+    Player getPlayer();
+    
 
 private:
     Chunk* base;
