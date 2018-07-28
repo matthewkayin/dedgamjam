@@ -10,6 +10,11 @@ inline float toRadians(float degree){
     return degree * (M_PI / 180);
 }
 
+inline float toDegrees(float radians){
+
+    return radians * (180 / M_PI);
+}
+
 enum ImgCode{
     GRASS,
     PLAYER,

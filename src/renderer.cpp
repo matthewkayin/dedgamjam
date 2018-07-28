@@ -58,6 +58,7 @@ bool Renderer::initGFX(std::string title, int width, int height){
     }
 
     isFullscreen = false;
+    SDL_ShowCursor(SDL_DISABLE);
 
     initializeColorConstants();
     setRenderDrawColor(black);
@@ -137,6 +138,16 @@ void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h){
     rect.w = w;
     rect.h = h;
     SDL_RenderCopy(renderer, texture, nullptr, &rect);
+}
+
+void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h, float angle){
+
+    SDL_Rect rect;
+    rect.x = x;
+    rect.y = y;
+    rect.w = w;
+    rect.h = h;
+    SDL_RenderCopyEx(renderer, texture, nullptr, &rect, (double)angle, nullptr, SDL_FLIP_NONE);
 }
 
 void Renderer::initializeColorConstants(){
