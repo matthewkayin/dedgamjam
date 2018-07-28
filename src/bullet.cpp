@@ -2,7 +2,6 @@
 
 Bullet::Bullet(int xi, int yi, float di){
 
-    std::cout << "bullet spawned with di " << di << std::endl;
     x = xi;
     y = yi;
     degree = di - 90;
