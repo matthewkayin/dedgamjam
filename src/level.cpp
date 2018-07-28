@@ -1,5 +1,9 @@
 #include "level.hpp"
 
+Level::Level(){
+    
+}
+
 Level::Level(int screenwidth, int screenheight){
 
     base = new Chunk(0, 0, screenwidth, screenheight);
