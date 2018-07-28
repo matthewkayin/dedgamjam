@@ -27,6 +27,7 @@ public:
     Chunk* getChunkFromPosition(int x, int y);
 
     Player* getPlayer();
+    Monster* getMonsterList();
 
 private:
     Chunk* base;
