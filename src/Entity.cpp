@@ -6,7 +6,6 @@ Entity::Entity(){
     y = 0;
     xSpeed = 0;
     ySpeed = 0;
-    health = 0;
     width = 0;
     height = 0;
 }
@@ -35,11 +34,6 @@ int Entity::getWidth(){
 int Entity::getHeight(){
 
     return height;
-}
-
-int Entity::getHealth(){
-
-    return health;
 }
 
 int Entity::getDX(){
@@ -75,11 +69,6 @@ void Entity::setDx(int value){
 void Entity::setDy(int value){
 
     ySpeed = value;
-}
-
-void Entity::setHealth(int value){
-
-    health = value;
 }
 
 void Entity::setImageCode(ImgCode value, int w, int h){

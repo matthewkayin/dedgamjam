@@ -27,14 +27,12 @@ public:
     int getDY();
     int getWidth();
     int getHeight();
-    int getHealth();
     ImgCode getImageCode();
 
     void setX(int value);
     void setY(int value);
     void setDx(int value);
     void setDy(int value);
-    void setHealth(int value);
     void setImageCode(ImgCode value, int w, int h);
 
     bool getCollision(Entity &other);
@@ -45,7 +43,6 @@ private:
     int y;
     int xSpeed;
     int ySpeed;
-    int health;
     int width;
     int height;
 };
