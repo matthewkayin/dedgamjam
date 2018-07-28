@@ -12,7 +12,17 @@ Monster::Monster()
 {
     setDx(0);
     setDy(0);
-    health = ;
+    health = 3;
     setImageCode(MONSTER, 48, 48);
     mSpeed = 1;
+}
+
+int Monster::getHealth(){
+    
+    return health;
+}
+
+void Monster::setHealth(int value){
+    
+    health = value;
 }
