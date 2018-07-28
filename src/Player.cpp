@@ -2,14 +2,14 @@
 
 Player::Player(){
     
-    setX(<#int value#>);
-    setY(<#int value#>);
-    setDx(<#int value#>);
-    setDy(<#int value#>);
-    setHealth(<#int value#>);
-    setImageCode(PLAYER, 64, 64)
+    setX((SCREEN_WIDTH - getWidth()) / 2);
+    setY((SCREEN_HEIGHT - getHeight()) /2);
+    setDx(0);
+    setDy(0);
+    setHealth(10);
+    /*setImageCode(PLAYER, 64, 64)
     timeSinceBoost = SDL_GetTicks();
-    boostDelay = 5000; //we can change this to increase time between boosts
+    boostDelay = 5000; //we can change this to increase time between boosts*/
 }
 
 Player::~Player(){
@@ -17,29 +17,11 @@ Player::~Player(){
     
 }
 
+int Player::getFuel(){
+    
+    return fuel;
+}
+
 void Player::fireShot(){
     
-    if (ammo <= 0)
-        //out of ammo output to screen
-    
-    if (ammo > 0)
-        //fire ammo
-}
-
-void Player::getFuel(){
-    
-    return fuel
-}
-
-bool Player::useBoost(){
-    if((SDL_GetTicks() - timeSinceBoost() >= 5000) && (fuel > /*enter value for boost here*/)){
-        
-        fuel -= /*value above*/;
-        timeSinceBoost = SDL_GetTicks();
-    }
-    
-    else{
-        
-        //output that can't use boost
-    }
 }

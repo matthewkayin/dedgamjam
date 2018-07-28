@@ -8,10 +8,9 @@ public:
     Player();
     ~Player();
     
+    int getFuel();
+    
     void fireShot();
-    void getFuel();
-    bool useBoost();
-    void resetBoost();
     
 private:
     int fuel;
