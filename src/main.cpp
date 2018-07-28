@@ -31,6 +31,8 @@ int main(int argc, char* argv[]){
 
     grass.import(renderer.getRenderer(), "res/gfx/grass.png");
 
+    level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
+
     //timing constants
     const Uint32 SECOND = 1000;
     const Uint32 TARGET_FPS = 90;

@@ -5,19 +5,26 @@
 #define LEVEL_H
 #include "Player.hpp"
 
+#include "chunk.hpp"
+
 class Level{
 
 public:
-    Level();
-    
+    Level(int screenwidth, int screenheight);
+    int getCameraXOffset() const;
+    int getCameraYOffset() const;
+    Chunk* getChunkFromPosition(int x, int y);
+
     void setPlayerSpeedX(int value);
     void setPlayerSpeedY(int value);
-    
 
 private:
+    Chunk* base;
     int chunkwidth;
     int chunkheight;
-    Player player1;
+    int cameraxOffset;
+    int camerayOffset;
+    Player player;
 };
 
 #endif
