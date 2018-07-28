@@ -21,7 +21,7 @@ bool running;
 int main(int argc, char* argv[]){
 
     //Init the renderer, exit program if initialization failed
-    if(!renderer.initGFX("Raycasting", 640, 480)){
+    if(!renderer.initGFX("Raycasting", 1280, 720)){
 
         return 0;
     }
@@ -147,7 +147,21 @@ void render(){
 
     renderer.clear();
 
-    renderer.drawImage(grass.getImage(), 0, 0, grass.getWidth(), grass.getHeight());
+    //draw the ground
+    int dx = 0;
+    int dy = 0;
+
+    for(int i = 0; i < (renderer.getScreenWidth() * renderer.getScreenHeight()) / 64; i++){
+
+        renderer.drawImage(grass.getImage(), dx, dy, grass.getHeight(), grass.getHeight());
+
+        dx += 64;
+        if(dx >= renderer.getScreenWidth()){
+
+            dx = 0;
+            dy += 64;
+        }
+    }
 
     renderer.render();
     frames++;

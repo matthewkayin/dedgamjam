@@ -88,7 +88,7 @@ void Renderer::drawLine(int x, int y, int distance, float degree){
     drawLine(x, y, x + sx, y + sy);
 }
 
-void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h){ 
+void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h){
 
     SDL_Rect rect;
     rect.x = x;
@@ -123,9 +123,19 @@ Renderer::Color Renderer::colorFromRGB(Uint8 r, Uint8 g, Uint8 b){
     return colorFromRGBA(r, g, b, 255);
 }
 
-SDL_Renderer* Renderer::getRenderer(){
+SDL_Renderer* Renderer::getRenderer() const{
 
     return renderer;
+}
+
+int Renderer::getScreenWidth() const{
+
+    return SCREEN_WIDTH;
+}
+
+int Renderer::getScreenHeight() const{
+
+    return SCREEN_HEIGHT;
 }
 
 void Renderer::giveError(std::string message){

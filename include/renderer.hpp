@@ -46,7 +46,9 @@ public:
     Color colorFromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
     Color colorFromRGB(Uint8 r, Uint8 g, Uint8 b);
 
-    SDL_Renderer* getRenderer();
+    SDL_Renderer* getRenderer() const;
+    int getScreenWidth() const;
+    int getScreenHeight() const;
 
 private:
     SDL_Renderer *renderer;
