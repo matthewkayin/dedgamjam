@@ -8,6 +8,7 @@ Player::Player(){
     maxPlayerSpeed = 5;
     playerSpeed = 5;
     acceltick = 0;
+    head = nullptr;
 }
 
 Player::Player(Uint32 currentTime){
@@ -18,12 +19,100 @@ Player::Player(Uint32 currentTime){
     maxPlayerSpeed = 5;
     playerSpeed = 5;
     acceltick = currentTime;
+    head = nullptr;
 }
 
-void Player::updatePosition(Uint32 currentTime, int delta){
+void Player::updatePosition(Uint32 currentTime, int delta, int screenwidth, int screenheight){
 
     setX(getX() + (getDX() * delta));
     setY(getY() + (getDY() * delta));
+
+    if(getX() <= 0){
+
+        setX(0);
+
+    }else if(getX() + getWidth() >= screenwidth){
+
+        setX(screenwidth - getWidth());
+    }
+
+    if(getY() <= 0){
+
+        setY(0);
+
+    }else if(getY() + getHeight() >= screenheight){
+
+        setY(screenheight - getHeight());
+    }
+
+    Bullet *curr = head;
+
+    while(curr != nullptr){
+
+        curr->updatePosition(delta);
+
+        if( ( curr->getX()  + 4 <= 0 || curr->getX() >= screenwidth ) &&
+            ( curr->getY() + 8 <= 0 || curr->getY() >= screenheight ) ){
+
+                Bullet *toSet = nullptr;
+                if(curr->getNext() != nullptr){
+
+                    toSet = curr->getNext();
+                }
+                killBullet(curr);
+                curr = toSet;
+            }
+
+        if(curr != nullptr){
+
+            curr = curr->getNext();
+        }
+    }
+}
+
+Bullet* Player::getHead(){
+
+    return head;
+}
+
+void Player::killBullet(Bullet *bullet){
+
+    if(bullet->getPrev() == nullptr){
+
+        head = bullet->getNext();
+
+    }else{
+
+        (bullet->getPrev())->setNext(bullet->getNext());
+
+        if(bullet->getNext() != nullptr){
+
+            (bullet->getNext())->setPrev(bullet->getPrev());
+        }
+    }
+
+    delete bullet;
+}
+
+void Player::shoot(float degree){
+
+    Bullet *toMake = new Bullet(getX(), getY(), degree);
+
+    if(head == nullptr){
+
+        head = toMake;
+
+    }else{
+
+        Bullet *curr = head;
+
+        while(curr->getNext() != nullptr){
+
+            curr = curr->getNext();
+        }
+
+        curr->setNext(toMake);
+    }
 }
 
 int Player::getSpeed() const{

@@ -18,25 +18,7 @@ Level::Level(int screenwidth, int screenheight){
 
 void Level::update(int delta){
 
-    player.updatePosition(SDL_GetTicks(), delta);
-
-    if(player.getX() <= 0){
-
-        player.setX(0);
-
-    }else if(player.getX() + player.getWidth() >= chunkwidth){
-
-        player.setX(chunkwidth - player.getWidth());
-    }
-
-    if(player.getY() <= 0){
-
-        player.setY(0);
-
-    }else if(player.getY() + player.getHeight() >= chunkheight){
-
-        player.setY(chunkheight - player.getHeight());
-    }
+    player.updatePosition(SDL_GetTicks(), delta, chunkwidth, chunkheight);
 }
 
 void Level::createMonster(){

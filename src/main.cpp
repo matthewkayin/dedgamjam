@@ -19,6 +19,7 @@ float getPlayerAngle();
 Texture grassT;
 Texture playerT;
 Texture cursorT;
+Texture bulletT;
 Texture fpsText;
 Texture upsText;
 Texture handRockT;
@@ -48,6 +49,7 @@ int main(int argc, char* argv[]){
     grassT.import(renderer.getRenderer(), "res/gfx/grass.png");
     playerT.import(renderer.getRenderer(), "res/gfx/fingergun.png");
     cursorT.import(renderer.getRenderer(), "res/gfx/cursor.png");
+    bulletT.import(renderer.getRenderer(), "res/gfx/bullet.png");
     handRockT.import(renderer.getRenderer(), "res/gfx/rockhand.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
@@ -180,6 +182,11 @@ void input(){
                     break;
             }
         }
+
+        if(e.type == SDL_MOUSEBUTTONDOWN){
+
+            level.getPlayer()->shoot(getPlayerAngle());
+        }
     }
 
     //scancodes and keyboard state are for figuring out which keys are being held in
@@ -249,7 +256,34 @@ void render(){
 
     float playerAngle = getPlayerAngle();
 
-    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getHeight(), playerT.getWidth(), playerAngle);
+    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
+    Bullet *curr = level.getPlayer()->getHead();
+    while(curr != nullptr){
+
+        /*float adjustedDegree = curr->getDegree();
+        if(adjustedDegree >= 360){
+
+            adjustedDegree -= 360;
+
+        }else if(adjustedDegree < 0){
+
+            adjustedDegree += 360;
+        }*/
+        float adjustedDegree = curr->getDegree();
+        adjustedDegree -= 90;
+        if(adjustedDegree >= 360){
+
+            adjustedDegree -= 360;
+
+        }else if(adjustedDegree < 0){
+
+            adjustedDegree += 360;
+        }
+
+        renderer.drawImage(bulletT.getImage(), curr->getX(), curr->getY(), bulletT.getWidth(), bulletT.getHeight(), -adjustedDegree);
+        curr = curr->getNext();
+    }
+
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
 
