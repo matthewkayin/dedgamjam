@@ -22,12 +22,12 @@ int Monster::getHealth(){
     return health;
 }
 
-void Monster::getHead(){
+Monster* Monster::getHead(){
     
     return head;
 }
 
-void Monster::getTail(){
+Monster* Monster::getTail(){
     
     return tail;
 }
