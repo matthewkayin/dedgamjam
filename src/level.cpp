@@ -160,3 +160,8 @@ Player* Level::getPlayer(){
 
     return &player;
 }
+
+Monster* Level::getMonsterList(){
+    
+    return monsters;
+}

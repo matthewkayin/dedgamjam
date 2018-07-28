@@ -22,6 +22,7 @@ Texture playerT;
 Texture cursorT;
 Texture fpsText;
 Texture upsText;
+Texture handRockT;
 
 bool displayFPS = false;
 
@@ -48,6 +49,7 @@ int main(int argc, char* argv[]){
     grassT.import(renderer.getRenderer(), "res/gfx/grass.png");
     playerT.import(renderer.getRenderer(), "res/gfx/fingergun.png");
     cursorT.import(renderer.getRenderer(), "res/gfx/cursor.png");
+    handRockT.import(renderer.getRenderer(), "res/gfx/rockhand.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -127,6 +129,7 @@ int main(int argc, char* argv[]){
     playerT.free();
     fpsText.free();
     upsText.free();
+    handRockT.free();
 
     return 0;
 }
@@ -282,6 +285,13 @@ void render(){
     renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth(), playerAngle);
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
+    
+    Monster* traverse = level.getMonsterList();
+    do{
+        renderer.drawImage(handRockT.getImage(), traverse->getX(), traverse->getY(), handRockT.getHeight(), handRockT.getWidth());
+        traverse->setTail(traverse->getTail());
+        
+    } while (traverse != nullptr);
 
     if(displayFPS){
 
