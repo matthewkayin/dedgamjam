@@ -3,6 +3,7 @@
 
 #ifndef LEVEL_H
 #define LEVEL_H
+#include "Player.hpp"
 
 #include "chunk.hpp"
 
@@ -13,12 +14,17 @@ public:
     int getCameraXOffset() const;
     int getCameraYOffset() const;
     Chunk* getChunkFromPosition(int x, int y);
+
+    void setPlayerSpeedX(int value);
+    void setPlayerSpeedY(int value);
+
 private:
     Chunk* base;
     int chunkwidth;
     int chunkheight;
     int cameraxOffset;
     int camerayOffset;
+    Player player;
 };
 
 #endif
