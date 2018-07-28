@@ -4,6 +4,7 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 #include "Player.hpp"
+#include "monster.hpp"
 
 #include "chunk.hpp"
 
@@ -20,6 +21,8 @@ public:
     void setCameraXSpeed(int value);
     void setCameraYSpeed(int value);
     int getCameraSpeed() const;
+    void createMonster();
+    void killMonster(Monster* deadMonster);
 
     Chunk* getChunkFromPosition(int x, int y);
 
@@ -35,6 +38,7 @@ private:
     int cameraySpeed;
     int cameraSpeed;
     Player player;
+    Monster* monsters;
 };
 
 #endif

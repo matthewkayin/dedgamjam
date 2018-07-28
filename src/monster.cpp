@@ -22,7 +22,27 @@ int Monster::getHealth(){
     return health;
 }
 
+void Monster::getHead(){
+    
+    return head;
+}
+
+void Monster::getTail(){
+    
+    return tail;
+}
+
 void Monster::setHealth(int value){
     
     health = value;
+}
+
+void Monster::setHead(Monster* newHead){
+    
+    head = newHead;
+}
+
+void setTail(Monster* newTail){
+    
+    tail = newTail;
 }
