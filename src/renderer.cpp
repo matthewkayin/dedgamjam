@@ -88,7 +88,7 @@ void Renderer::drawLine(int x, int y, int distance, float degree){
     drawLine(x, y, x + sx, y + sy);
 }
 
-void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h){
+void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h){ 
 
     SDL_Rect rect;
     rect.x = x;
