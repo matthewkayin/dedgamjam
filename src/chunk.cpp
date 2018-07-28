@@ -16,22 +16,22 @@ Object* Chunk::getHead(){
     return head;
 }
 
-Chunk* Chunk::getLeft(){
+Chunk* Chunk::getLeft() const{
 
     return left;
 }
 
-Chunk* Chunk::getRight(){
+Chunk* Chunk::getRight() const{
 
     return right;
 }
 
-Chunk* Chunk::getUp(){
+Chunk* Chunk::getUp() const{
 
     return up;
 }
 
-Chunk* Chunk::getDown(){
+Chunk* Chunk::getDown() const{
 
     return right;
 }
@@ -54,4 +54,14 @@ void Chunk::generateUp(){
 void Chunk::generateDown(){
 
     down = new Chunk(x, y + height, width, height);
+}
+
+int Chunk::getX() const{
+
+    return x;
+}
+
+int Chunk::getY() const{
+
+    return y;
 }
