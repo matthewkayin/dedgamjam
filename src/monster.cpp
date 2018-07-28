@@ -8,15 +8,13 @@
 
 #include "monster.hpp"
 
-Monster::Monster()
-{
-    head = nullptr;
-    tail = nullptr;
+Monster::Monster(){
     setDx(0);
     setDy(0);
     health = 3;
     setImageCode(MONSTER, 48, 48);
     mSpeed = 1;
+    inUse = false;
 }
 
 int Monster::getHealth(){
@@ -24,14 +22,9 @@ int Monster::getHealth(){
     return health;
 }
 
-Monster* Monster::getHead(){
-
-    return head;
-}
-
-Monster* Monster::getTail(){
-
-    return tail;
+bool Monster::beingUsed(){
+    
+    return inUse;
 }
 
 void Monster::setHealth(int value){
@@ -39,12 +32,7 @@ void Monster::setHealth(int value){
     health = value;
 }
 
-void Monster::setHead(Monster* newHead){
-
-    head = newHead;
-}
-
-void Monster::setTail(Monster* newTail){
-
-    tail = newTail;
+void Monster::setUse(bool value){
+    
+    inUse = value;
 }

@@ -11,20 +11,20 @@ class Level{
 public:
     Level();
     Level(int screenwidth, int screenheight);
+    ~Level();
 
     void update(int delta);
 
     void createMonster();
-    void killMonster(Monster* deadMonster);
+    Monster* getMonsterArray();
 
     Player* getPlayer();
-    Monster* getMonsterList();
 
 private:
     int chunkwidth;
     int chunkheight;
     Player player;
-    Monster* monsters;
+    Monster monsterArray[100];
 };
 
 #endif

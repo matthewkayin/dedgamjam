@@ -9,18 +9,15 @@ public:
     Monster();
     
     int getHealth();
-    Monster* getHead();
-    Monster* getTail();
+    bool beingUsed();
     
     void setHealth(int value);
-    void setHead(Monster* newHead);
-    void setTail(Monster* newTail);
+    void setUse(bool value);
     
 private:
     int health;
     int mSpeed;
-    Monster* head;
-    Monster* tail;
+    bool inUse;
 };
 
 #endif /* monster_h */
