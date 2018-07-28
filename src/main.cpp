@@ -13,7 +13,6 @@
 void input();
 void update(int delta);
 void render();
-void renderChunk(Chunk *toRender);
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 float getPlayerAngle();
 
@@ -186,8 +185,6 @@ void input(){
     //scancodes and keyboard state are for figuring out which keys are being held in
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
-    std::cout << recentX << std::endl;
-
     if (state[SDL_SCANCODE_W] && state[SDL_SCANCODE_S]){
 
         level.getPlayer()->setDy(recentY * level.getPlayer()->getSpeed());
@@ -221,32 +218,6 @@ void input(){
 
         level.getPlayer()->setDx(0);
     }
-
-    if(state[SDL_SCANCODE_UP]){
-
-        level.setCameraYSpeed(-level.getCameraSpeed());
-
-    }else if(state[SDL_SCANCODE_DOWN]){
-
-        level.setCameraYSpeed(level.getCameraSpeed());
-
-    }else{
-
-        level.setCameraYSpeed(0);
-    }
-
-    if(state[SDL_SCANCODE_LEFT]){
-
-        level.setCameraXSpeed(-level.getCameraSpeed());
-
-    }else if(state[SDL_SCANCODE_RIGHT]){
-
-        level.setCameraXSpeed(level.getCameraSpeed());
-
-    }else{
-
-        level.setCameraXSpeed(0);
-    }
 }
 
 void update(int delta){
@@ -260,38 +231,34 @@ void render(){
 
     renderer.clear();
 
-    //Chunk *curr = level.getChunkFromPosition(level.getCameraXOffset(), level.getCameraYOffset());
-    Chunk *curr = level.getChunkFromPosition(0, 0);
-    renderChunk(curr);
-    /*if(curr->getX() > level.getCameraXOffset()){
+    //draw the ground
+    int dx = 0;
+    int dy = 0;
 
-        renderChunk(curr->getLeft());
+    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
 
-    }else if(curr->getX() < level.getCameraXOffset()){
+        renderer.drawImage(grassT.getImage(), dx, dy, grassT.getWidth(), grassT.getHeight());
 
-        renderChunk(curr->getRight());
+        dx += 64;
+        if(dx >= renderer.getScreenWidth()){
+
+            dx = 0;
+            dy += 64;
+        }
     }
-    if(curr->getY() > level.getCameraYOffset()){
-
-        renderChunk(curr->getUp());
-
-    }else if(curr->getY() < level.getCameraYOffset()){
-
-        renderChunk(curr->getDown());
-    } */
 
     float playerAngle = getPlayerAngle();
 
-    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth(), playerAngle);
+    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getHeight(), playerT.getWidth(), playerAngle);
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
-    
-    Monster* traverse = level.getMonsterList();
+
+    /*Monster* traverse = level.getMonsterList();
     do{
         renderer.drawImage(handRockT.getImage(), traverse->getX(), traverse->getY(), handRockT.getHeight(), handRockT.getWidth());
         traverse->setTail(traverse->getTail());
-        
-    } while (traverse != nullptr);
+
+    } while (traverse != nullptr); */
 
     if(displayFPS){
 
@@ -301,37 +268,6 @@ void render(){
 
     renderer.render();
     frames++;
-}
-
-void renderChunk(Chunk *toRender){
-
-    if(toRender == nullptr){
-
-        std::cout << "Error! Attempting to render a null chunk!" << std::endl;
-        return;
-    }
-
-    //draw the ground
-    int dx = 0;
-    int dy = 0;
-
-    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
-
-        int xpoint = dx + toRender->getX() - level.getCameraXOffset();
-        int ypoint = dy + toRender->getY() - level.getCameraYOffset();
-
-        if( getRectangleCollision(xpoint, ypoint, grassT.getWidth(), grassT.getHeight(), 0, 0, renderer.getScreenWidth(), renderer.getScreenHeight()) ){
-
-            renderer.drawImage(grassT.getImage(), xpoint, ypoint, grassT.getWidth(), grassT.getHeight());
-        }
-
-        dx += 64;
-        if(dx >= renderer.getScreenWidth()){
-
-            dx = 0;
-            dy += 64;
-        }
-    }
 }
 
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){

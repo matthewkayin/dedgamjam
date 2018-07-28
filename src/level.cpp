@@ -6,14 +6,8 @@ Level::Level(){
 
 Level::Level(int screenwidth, int screenheight){
 
-    base = new Chunk(0, 0, screenwidth, screenheight);
-    cameraxOffset = 0;
-    camerayOffset = 0;
     chunkwidth = screenwidth;
     chunkheight = screenheight;
-    cameraSpeed = 3;
-    cameraxSpeed = 0;
-    cameraySpeed = 0;
 
     monsters = nullptr;
 
@@ -26,64 +20,23 @@ void Level::update(int delta){
 
     player.updatePosition(SDL_GetTicks(), delta);
 
-    cameraxOffset += (cameraxSpeed * delta);
-    camerayOffset += (cameraySpeed * delta);
-}
+    if(player.getX() <= 0){
 
-Chunk* Level::getChunkFromPosition(int x, int y){
+        player.setX(0);
 
-    Chunk* curr = base;
+    }else if(player.getX() + player.getWidth() >= chunkwidth){
 
-    //while x and y are not inside curr's coordinate reach
-    if( !( x >= curr->getX() && x < curr->getX() + chunkwidth && y >= curr->getY() && y <= curr->getY() + chunkheight ) ){
-
-        while(x < curr->getX() && curr != nullptr){
-
-            curr = curr->getLeft();
-        }
-
-        while(x >= curr->getX() + chunkwidth && curr != nullptr){
-
-            curr = curr->getRight();
-        }
-
-        while(y < curr->getY() && curr != nullptr){
-
-            curr = curr->getUp();
-        }
-
-        while(y >= curr->getY() + chunkheight && curr != nullptr){
-
-            curr = curr->getDown();
-        }
+        player.setX(chunkwidth - player.getWidth());
     }
 
-    return curr;
-}
+    if(player.getY() <= 0){
 
-int Level::getCameraXOffset() const{
+        player.setY(0);
 
-    return cameraxOffset;
-}
+    }else if(player.getY() + player.getHeight() >= chunkheight){
 
-int Level::getCameraYOffset() const{
-
-    return camerayOffset;
-}
-
-void Level::setCameraXSpeed(int value){
-
-    cameraxSpeed = value;
-}
-
-void Level::setCameraYSpeed(int value){
-
-    cameraySpeed = value;
-}
-
-int Level::getCameraSpeed() const{
-
-    return cameraSpeed;
+        player.setY(chunkheight - player.getHeight());
+    }
 }
 
 void Level::createMonster(){
@@ -162,6 +115,6 @@ Player* Level::getPlayer(){
 }
 
 Monster* Level::getMonsterList(){
-    
+
     return monsters;
 }
