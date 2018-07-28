@@ -45,6 +45,7 @@ public:
     void drawLine(int x, int y, int sx, int sy);
     void drawLine(int x, int y, int distance, float degree);
     void drawImage(SDL_Texture* texture, int x, int y, int w, int h);
+    void drawImage(SDL_Texture* texture, int x, int y, int w, int h, float angle);
 
     //constants for commonly used colors
     Color white;

@@ -8,15 +8,18 @@
 #include <SDL2/SDL.h>
 
 #include <iostream>
+#include <cmath>
 
 void input();
 void update(int delta);
 void render();
 void renderChunk(Chunk *toRender);
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
+float getPlayerAngle();
 
 Texture grassT;
 Texture playerT;
+Texture cursorT;
 Texture fpsText;
 Texture upsText;
 
@@ -24,6 +27,9 @@ bool displayFPS = false;
 
 Renderer renderer;
 Level level;
+
+int mousex;
+int mousey;
 
 int updates;
 int frames;
@@ -39,6 +45,7 @@ int main(int argc, char* argv[]){
 
     grassT.import(renderer.getRenderer(), "res/gfx/grass.png");
     playerT.import(renderer.getRenderer(), "res/gfx/fingergun.png");
+    cursorT.import(renderer.getRenderer(), "res/gfx/cursor.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -132,6 +139,12 @@ void input(){
         if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)){
 
             running = false;
+        }
+
+        if(e.type == SDL_MOUSEMOTION){
+
+            mousex = e.motion.x;
+            mousey = e.motion.y;
         }
 
         if(e.type == SDL_KEYDOWN){
@@ -228,7 +241,11 @@ void render(){
         renderChunk(curr->getDown());
     } */
 
-    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth());
+    float playerAngle = getPlayerAngle();
+
+    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth(), playerAngle);
+
+    renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
 
     if(displayFPS){
 
@@ -299,4 +316,71 @@ bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int yt
     }
 
     return false;
+}
+
+float getPlayerAngle(){
+
+    int playerx = level.getPlayer()->getX();
+    int playery = level.getPlayer()->getY() + level.getPlayer()->getHeight();
+
+    int xdist = pow(mousex - playerx, 2);
+    int ydist = pow(mousey - playery, 2);
+    float playerAngle = toDegrees(atan2(ydist, xdist));
+
+    if(mousex - playerx < 0 && playery - mousey > 0){
+
+        playerAngle += 180;
+
+    }else if(mousex - playerx > 0 && playery - mousey < 0){
+
+        playerAngle += 180;
+
+    }else{
+
+        playerAngle = 90 - playerAngle;
+    }
+
+    if(mousex - playerx > 0){
+
+        if(playery - mousey < 0){
+
+            playerAngle += 270;
+        }
+
+    }else if(mousex - playerx < 0){
+
+        if(playery - mousey < 0){
+
+            playerAngle += 180;
+
+        }else if(playery - mousey > 0){
+
+            playerAngle += 90;
+        }
+    }
+
+    if(xdist == 0){
+
+        if(playery - mousey < 0){
+
+            playerAngle = 90;
+
+        }else{
+
+            playerAngle = 180;
+        }
+
+    }else if(ydist == 0){
+
+        if(mousex - playerx < 0){
+
+            playerAngle = 180;
+
+        }else if(mousex - playerx > 0){
+
+            playerAngle = 0;
+        }
+    }
+
+    return playerAngle;
 }
