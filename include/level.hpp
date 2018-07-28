@@ -13,7 +13,10 @@ public:
     void setPlayerSpeedX(int value);
     void setPlayerSpeedY(int value);
     
+
 private:
+    int chunkwidth;
+    int chunkheight;
     Player player1;
 };
 
