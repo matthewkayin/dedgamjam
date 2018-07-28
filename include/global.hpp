@@ -10,4 +10,11 @@ inline float toRadians(float degree){
     return degree * (M_PI / 180);
 }
 
+enum ImgCode{
+    PLAYER,
+    MONSTER,
+    BOSS,
+    BACKGROUND
+};
+
 #endif
