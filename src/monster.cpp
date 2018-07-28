@@ -18,7 +18,7 @@ Monster::Monster(){
 }
 
 int Monster::getHealth(){
-    
+
     return health;
 }
 
@@ -28,7 +28,7 @@ bool Monster::beingUsed(){
 }
 
 void Monster::setHealth(int value){
-    
+
     health = value;
 }
 

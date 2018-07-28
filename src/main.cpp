@@ -13,7 +13,6 @@
 void input();
 void update(int delta);
 void render();
-void renderChunk(Chunk *toRender);
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 float getPlayerAngle();
 
@@ -31,6 +30,8 @@ Level level;
 
 int mousex;
 int mousey;
+int recentY = 0;
+int recentX = 0;
 
 int updates;
 int frames;
@@ -168,6 +169,22 @@ void input(){
                 case SDLK_F11:
                     renderer.toggleFullscreen();
                     break;
+
+                case SDLK_w:
+                    recentY = -1;
+                    break;
+
+                case SDLK_s:
+                    recentY = 1;
+                    break;
+
+                case SDLK_a:
+                    recentX = -1;
+                    break;
+
+                case SDLK_d:
+                    recentX = 1;
+                    break;
             }
         }
     }
@@ -175,48 +192,38 @@ void input(){
     //scancodes and keyboard state are for figuring out which keys are being held in
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
-    if (state[SDL_SCANCODE_W])
-        level.getPlayer()->setDy(-level.getPlayer()->getPlayerSpeed());
-    else{
-        if (state[SDL_SCANCODE_S])
-            level.getPlayer()->setDy(level.getPlayer()->getPlayerSpeed());
-        else
-            level.getPlayer()->setDy(0);
-    }
+    if (state[SDL_SCANCODE_W] && state[SDL_SCANCODE_S]){
 
-    if (state[SDL_SCANCODE_A])
-        level.getPlayer()->setDx(-level.getPlayer()->getPlayerSpeed());
-    else{
-        if (state[SDL_SCANCODE_D])
-            level.getPlayer()->setDx(level.getPlayer()->getPlayerSpeed());
-        else
-            level.getPlayer()->setDx(0);
-    }
+        level.getPlayer()->setDy(recentY * level.getPlayer()->getSpeed());
 
-    if(state[SDL_SCANCODE_UP]){
+    }else if(state[SDL_SCANCODE_W]){
 
-        level.setCameraYSpeed(-level.getCameraSpeed());
+        level.getPlayer()->setDy(-level.getPlayer()->getSpeed());
 
-    }else if(state[SDL_SCANCODE_DOWN]){
+    }else if(state[SDL_SCANCODE_S]){
 
-        level.setCameraYSpeed(level.getCameraSpeed());
+        level.getPlayer()->setDy(level.getPlayer()->getSpeed());
 
     }else{
 
-        level.setCameraYSpeed(0);
+        level.getPlayer()->setDy(0);
     }
 
-    if(state[SDL_SCANCODE_LEFT]){
+    if (state[SDL_SCANCODE_A] && state[SDL_SCANCODE_D]){
 
-        level.setCameraXSpeed(-level.getCameraSpeed());
+        level.getPlayer()->setDx(recentX * level.getPlayer()->getSpeed());
 
-    }else if(state[SDL_SCANCODE_RIGHT]){
+    }else if(state[SDL_SCANCODE_A]){
 
-        level.setCameraXSpeed(level.getCameraSpeed());
+        level.getPlayer()->setDx(-level.getPlayer()->getSpeed());
+
+    }else if(state[SDL_SCANCODE_D]){
+
+        level.getPlayer()->setDx(level.getPlayer()->getSpeed());
 
     }else{
 
-        level.setCameraXSpeed(0);
+        level.getPlayer()->setDx(0);
     }
 }
 
@@ -231,25 +238,21 @@ void render(){
 
     renderer.clear();
 
-    //Chunk *curr = level.getChunkFromPosition(level.getCameraXOffset(), level.getCameraYOffset());
-    Chunk *curr = level.getChunkFromPosition(0, 0);
-    renderChunk(curr);
-    /*if(curr->getX() > level.getCameraXOffset()){
+    //draw the ground
+    int dx = 0;
+    int dy = 0;
 
-        renderChunk(curr->getLeft());
+    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
 
-    }else if(curr->getX() < level.getCameraXOffset()){
+        renderer.drawImage(grassT.getImage(), dx, dy, grassT.getWidth(), grassT.getHeight());
 
-        renderChunk(curr->getRight());
+        dx += 64;
+        if(dx >= renderer.getScreenWidth()){
+
+            dx = 0;
+            dy += 64;
+        }
     }
-    if(curr->getY() > level.getCameraYOffset()){
-
-        renderChunk(curr->getUp());
-
-    }else if(curr->getY() < level.getCameraYOffset()){
-
-        renderChunk(curr->getDown());
-    } */
 
     float playerAngle = getPlayerAngle();
     
@@ -260,10 +263,10 @@ void render(){
             renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
     }
 
-    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth(), playerAngle);
+    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getHeight(), playerT.getWidth(), playerAngle);
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
-    
+
     if(displayFPS){
 
         renderer.drawImage(fpsText.getImage(), 0, 0, fpsText.getWidth(), fpsText.getHeight());
@@ -272,37 +275,6 @@ void render(){
 
     renderer.render();
     frames++;
-}
-
-void renderChunk(Chunk *toRender){
-
-    if(toRender == nullptr){
-
-        std::cout << "Error! Attempting to render a null chunk!" << std::endl;
-        return;
-    }
-
-    //draw the ground
-    int dx = 0;
-    int dy = 0;
-
-    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
-
-        int xpoint = dx + toRender->getX() - level.getCameraXOffset();
-        int ypoint = dy + toRender->getY() - level.getCameraYOffset();
-
-        if( getRectangleCollision(xpoint, ypoint, grassT.getWidth(), grassT.getHeight(), 0, 0, renderer.getScreenWidth(), renderer.getScreenHeight()) ){
-
-            renderer.drawImage(grassT.getImage(), xpoint, ypoint, grassT.getWidth(), grassT.getHeight());
-        }
-
-        dx += 64;
-        if(dx >= renderer.getScreenWidth()){
-
-            dx = 0;
-            dy += 64;
-        }
-    }
 }
 
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){

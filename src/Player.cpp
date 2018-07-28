@@ -4,34 +4,29 @@ Player::Player(){
 
     setDx(0);
     setDy(0);
-    health = 10;
     setImageCode(PLAYER, 64, 64);
-    playerSpeed = 3; //this is going to be waay too high lol
-    /*timeSinceBoost = SDL_GetTicks();
-    boostDelay = 5000; //we can change this to increase time between boosts*/
+    maxPlayerSpeed = 5;
+    playerSpeed = 5;
+    acceltick = 0;
 }
 
-int Player::getHealth(){
-    
-    return health;
+Player::Player(Uint32 currentTime){
+
+    setDx(0);
+    setDy(0);
+    setImageCode(PLAYER, 64, 64);
+    maxPlayerSpeed = 5;
+    playerSpeed = 5;
+    acceltick = currentTime;
 }
 
-int Player::getFuel(){
+void Player::updatePosition(Uint32 currentTime, int delta){
 
-    return fuel;
+    setX(getX() + (getDX() * delta));
+    setY(getY() + (getDY() * delta));
 }
 
-void Player::fireShot(){
-
-}
-
-void Player::setHealth(int value){
-    
-    health = value;
-}
-
-int Player::getPlayerSpeed(){
+int Player::getSpeed() const{
 
     return playerSpeed;
 }
-
