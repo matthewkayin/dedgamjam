@@ -42,7 +42,7 @@ void Monster::setHead(Monster* newHead){
     head = newHead;
 }
 
-void setTail(Monster* newTail){
+void Monster::setTail(Monster* newTail){
     
     tail = newTail;
 }
