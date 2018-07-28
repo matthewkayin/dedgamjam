@@ -10,6 +10,7 @@
 class Level{
 
 public:
+    Level();
     Level(int screenwidth, int screenheight);
     int getCameraXOffset() const;
     int getCameraYOffset() const;

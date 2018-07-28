@@ -13,6 +13,7 @@ void update(int delta);
 void render();
 
 Texture grass;
+Texture playerT;
 
 Renderer renderer;
 Level level;
