@@ -2,6 +2,7 @@
 //main.cpp
 
 #include "renderer.hpp"
+#include "texture.hpp"
 
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -9,6 +10,8 @@
 void input();
 void update(int delta);
 void render();
+
+Texture grass;
 
 Renderer renderer;
 int updates;
@@ -22,6 +25,8 @@ int main(int argc, char* argv[]){
 
         return 0;
     }
+
+    grass.import(renderer.getRenderer(), "res/gfx/grass.png");
 
     //timing constants
     const Uint32 SECOND = 1000;
@@ -140,5 +145,10 @@ void update(int delta){
 
 void render(){
 
+    renderer.clear();
+
+    renderer.drawImage(grass.getImage(), 0, 0, grass.getWidth(), grass.getHeight());
+
+    renderer.render();
     frames++;
 }

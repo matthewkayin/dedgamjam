@@ -33,6 +33,7 @@ public:
     void fillRect(int x, int y, int width, int height);
     void drawLine(int x, int y, int sx, int sy);
     void drawLine(int x, int y, int distance, float degree);
+    void drawImage(SDL_Texture* texture, int x, int y, int w, int h);
 
     //constants for commonly used colors
     Color white;
@@ -44,6 +45,8 @@ public:
     //utility functions to store paramters into a Color struct
     Color colorFromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
     Color colorFromRGB(Uint8 r, Uint8 g, Uint8 b);
+
+    SDL_Renderer* getRenderer();
 
 private:
     SDL_Renderer *renderer;

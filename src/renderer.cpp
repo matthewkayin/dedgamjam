@@ -30,7 +30,7 @@ bool Renderer::initGFX(std::string title, int width, int height){
 
         giveSDLError("unable to initialize window");
         return false;
-    } 
+    }
 
     initializeColorConstants();
     setRenderDrawColor(black);
@@ -88,6 +88,16 @@ void Renderer::drawLine(int x, int y, int distance, float degree){
     drawLine(x, y, x + sx, y + sy);
 }
 
+void Renderer::drawImage(SDL_Texture* texture, int x, int y, int w, int h){
+
+    SDL_Rect rect;
+    rect.x = x;
+    rect.y = y;
+    rect.w = w;
+    rect.h = h;
+    SDL_RenderCopy(renderer, texture, nullptr, &rect);
+}
+
 void Renderer::initializeColorConstants(){
 
     white = colorFromRGB(255, 255, 255);
@@ -111,6 +121,11 @@ Renderer::Color Renderer::colorFromRGBA(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
 Renderer::Color Renderer::colorFromRGB(Uint8 r, Uint8 g, Uint8 b){
 
     return colorFromRGBA(r, g, b, 255);
+}
+
+SDL_Renderer* Renderer::getRenderer(){
+
+    return renderer;
 }
 
 void Renderer::giveError(std::string message){
