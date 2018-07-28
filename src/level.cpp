@@ -68,14 +68,19 @@ int Level::getCameraYOffset() const{
     return camerayOffset;
 }
 
-void Level::setPlayerSpeedX(int value){
+void Level::setCameraXSpeed(int value){
 
-    player.setDx(value);
+    cameraxSpeed = value;
 }
 
-void Level::setPlayerSpeedY(int value){
+void Level::setCameraYSpeed(int value){
 
-    player.setDy(value);
+    cameraySpeed = value;
+}
+
+int Level::getCameraSpeed() const{
+
+    return cameraSpeed;
 }
 
 Player Level::getPlayer(){

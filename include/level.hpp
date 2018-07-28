@@ -23,9 +23,6 @@ public:
 
     Chunk* getChunkFromPosition(int x, int y);
 
-    void setPlayerSpeedX(int value);
-    void setPlayerSpeedY(int value);
-
     Player getPlayer();
 
 private:

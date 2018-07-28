@@ -32,6 +32,7 @@ int main(int argc, char* argv[]){
     }
 
     grassT.import(renderer.getRenderer(), "res/gfx/grass.png");
+    playerT.import(renderer.getRenderer(), "res/gfx/fingergun.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -144,29 +145,29 @@ void input(){
     //scancodes and keyboard state are for figuring out which keys are being held in
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
-    if (state[SDLK_w])
-        level.setPlayerSpeedY(-level.getPlayer().getPlayerSpeed());
+    if (state[SDL_SCANCODE_W])
+        level.getPlayer().setDy(-level.getPlayer().getPlayerSpeed());
     else{
-        if (state[SDLK_s])
-            level.setPlayerSpeedY(level.getPlayer().getPlayerSpeed());
+        if (state[SDL_SCANCODE_S])
+            level.getPlayer().setDy(level.getPlayer().getPlayerSpeed());
         else
-            level.setPlayerSpeedY(0);
+            level.getPlayer().setDy(0);
     }
 
-    if (state[SDLK_a])
-        level.setPlayerSpeedX(-level.getPlayer().getPlayerSpeed());
+    if (state[SDL_SCANCODE_A])
+        level.getPlayer().setDx(-level.getPlayer().getPlayerSpeed());
     else{
-        if (state[SDLK_d])
-            level.setPlayerSpeedX(level.getPlayer().getPlayerSpeed());
+        if (state[SDL_SCANCODE_D])
+            level.getPlayer().setDx(level.getPlayer().getPlayerSpeed());
         else
-            level.setPlayerSpeedX(0);
+            level.getPlayer().setDx(0);
     }
 
-    if(state[SDLK_UP]){
+    if(state[SDL_SCANCODE_UP]){
 
         level.setCameraYSpeed(-level.getCameraSpeed());
 
-    }else if(state[SDLK_DOWN]){
+    }else if(state[SDL_SCANCODE_DOWN]){
 
         level.setCameraYSpeed(level.getCameraSpeed());
 
@@ -175,11 +176,11 @@ void input(){
         level.setCameraYSpeed(0);
     }
 
-    if(state[SDLK_LEFT]){
+    if(state[SDL_SCANCODE_LEFT]){
 
         level.setCameraXSpeed(-level.getCameraSpeed());
 
-    }else if(state[SDLK_RIGHT]){
+    }else if(state[SDL_SCANCODE_RIGHT]){
 
         level.setCameraXSpeed(level.getCameraSpeed());
 
@@ -190,6 +191,8 @@ void input(){
 }
 
 void update(int delta){
+
+    level.update(delta);
 
     updates += delta;
 }
@@ -216,6 +219,8 @@ void render(){
 
         renderChunk(curr->getDown());
     }
+
+    renderer.drawImage(playerT.getImage(), level.getPlayer().getX(), level.getPlayer().getY(), playerT.getHeight(), playerT.getWidth());
 
     renderer.render();
     frames++;
