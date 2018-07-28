@@ -2,8 +2,6 @@
 
 Player::Player(){
     
-    setX((SCREEN_WIDTH - getWidth()) / 2);
-    setY((SCREEN_HEIGHT - getHeight()) /2);
     setDx(0);
     setDy(0);
     setHealth(10);
