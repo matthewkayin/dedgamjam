@@ -148,21 +148,21 @@ void input(){
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
 
     if (state[SDL_SCANCODE_W])
-        level.getPlayer().setDy(-level.getPlayer().getPlayerSpeed());
+        level.getPlayer()->setDy(-level.getPlayer()->getPlayerSpeed());
     else{
         if (state[SDL_SCANCODE_S])
-            level.getPlayer().setDy(level.getPlayer().getPlayerSpeed());
+            level.getPlayer()->setDy(level.getPlayer()->getPlayerSpeed());
         else
-            level.getPlayer().setDy(0);
+            level.getPlayer()->setDy(0);
     }
 
     if (state[SDL_SCANCODE_A])
-        level.getPlayer().setDx(-level.getPlayer().getPlayerSpeed());
+        level.getPlayer()->setDx(-level.getPlayer()->getPlayerSpeed());
     else{
         if (state[SDL_SCANCODE_D])
-            level.getPlayer().setDx(level.getPlayer().getPlayerSpeed());
+            level.getPlayer()->setDx(level.getPlayer()->getPlayerSpeed());
         else
-            level.getPlayer().setDx(0);
+            level.getPlayer()->setDx(0);
     }
 
     if(state[SDL_SCANCODE_UP]){
@@ -223,7 +223,7 @@ void render(){
         renderChunk(curr->getDown());
     } */
 
-    renderer.drawImage(playerT.getImage(), level.getPlayer().getX() - level.getCameraXOffset(), level.getPlayer().getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth());
+    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX() - level.getCameraXOffset(), level.getPlayer()->getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth());
 
     renderer.render();
     frames++;

@@ -23,7 +23,7 @@ public:
 
     Chunk* getChunkFromPosition(int x, int y);
 
-    Player getPlayer();
+    Player* getPlayer();
 
 private:
     Chunk* base;

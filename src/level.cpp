@@ -21,7 +21,6 @@ Level::Level(int screenwidth, int screenheight){
 
 void Level::update(int delta){
 
-    std::cout << "player.";
     player.updatePosition(delta);
 
     cameraxOffset += (cameraxSpeed * delta);
@@ -84,7 +83,7 @@ int Level::getCameraSpeed() const{
     return cameraSpeed;
 }
 
-Player Level::getPlayer(){
+Player* Level::getPlayer(){
 
-    return player;
+    return &player;
 }
