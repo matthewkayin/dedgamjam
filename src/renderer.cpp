@@ -6,6 +6,18 @@ Renderer::Renderer(){
     renderer = nullptr;
 }
 
+Renderer::~Renderer(){
+
+    if(isFullscreen){
+
+        SDL_SetWindowFullscreen(window, 0);
+    }
+    SDL_ShowCursor(SDL_ENABLE);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
 bool Renderer::initGFX(std::string title, int width, int height){
 
     if(window || renderer){
@@ -20,7 +32,7 @@ bool Renderer::initGFX(std::string title, int width, int height){
     if(SDL_Init(SDL_INIT_VIDEO) < 0){
 
         giveSDLError("unable to initialize SDL");
-        return false;
+        return false;SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     }
 
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -37,7 +49,7 @@ bool Renderer::initGFX(std::string title, int width, int height){
     if(TTF_Init() == -1){
 
         std::cout << "Unable to initialize SDL_ttf! SDL Error: " << TTF_GetError() << std::endl;
-    } 
+    }
 
     if(!window || !renderer){
 
@@ -45,12 +57,28 @@ bool Renderer::initGFX(std::string title, int width, int height){
         return false;
     }
 
+    isFullscreen = false;
+
     initializeColorConstants();
     setRenderDrawColor(black);
     clear();
     render();
 
     return true;
+}
+
+void Renderer::toggleFullscreen(){
+
+    if(!isFullscreen){
+
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+
+    }else{
+
+        SDL_SetWindowFullscreen(window, 0);
+    }
+
+    isFullscreen = !isFullscreen;
 }
 
 void Renderer::clear(){

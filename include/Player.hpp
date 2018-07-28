@@ -18,6 +18,8 @@ public:
 private:
     int fuel;
     int ammo;
+    
+    int maxPlayerSpeed;
     int playerSpeed;
     int health;
     Uint32 timeSinceBoost;
