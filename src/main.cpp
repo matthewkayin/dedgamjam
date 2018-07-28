@@ -3,6 +3,7 @@
 
 #include "renderer.hpp"
 #include "texture.hpp"
+#include "level.hpp"
 
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -14,6 +15,8 @@ void render();
 Texture grass;
 
 Renderer renderer;
+Level level;
+
 int updates;
 int frames;
 bool running;
@@ -136,6 +139,26 @@ void input(){
 
     //scancodes and keyboard state are for figuring out which keys are being held in
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
+    int playerSpeed = 20;
+    
+    if (state[SDLK_w])
+        level.setPlayerSpeedY(-playerSpeed);
+    else{
+        if (state[SDLK_s])
+            level.setPlayerSpeedY(playerSpeed);
+        else
+            level.setPlayerSpeedY(0);
+    }
+    
+    if (state[SDLK_a])
+        level.setPlayerSpeedX(-playerSpeed);
+    else{
+        if (state[SDLK_d])
+            level.setPlayerSpeedX(playerSpeed);
+        else
+            level.setPlayerSpeedX(0);
+    }
+
 }
 
 void update(int delta){

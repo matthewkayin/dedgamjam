@@ -3,13 +3,18 @@
 
 #ifndef LEVEL_H
 #define LEVEL_H
+#include "Player.hpp"
 
 class Level{
 
 public:
     Level();
-private:
     
+    void setPlayerSpeedX(int value);
+    void setPlayerSpeedY(int value);
+    
+private:
+    Player player1;
 };
 
 #endif
