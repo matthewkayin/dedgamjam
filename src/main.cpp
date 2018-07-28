@@ -26,7 +26,7 @@ bool running;
 int main(int argc, char* argv[]){
 
     //Init the renderer, exit program if initialization failed
-    if(!renderer.initGFX("Raycasting", 1280, 720)){
+    if(!renderer.initGFX("Raycasting", 1280, 768)){
 
         return 0;
     }
@@ -201,9 +201,10 @@ void render(){
 
     renderer.clear();
 
-    Chunk *curr = level.getChunkFromPosition(level.getCameraXOffset(), level.getCameraYOffset());
+    //Chunk *curr = level.getChunkFromPosition(level.getCameraXOffset(), level.getCameraYOffset());
+    Chunk *curr = level.getChunkFromPosition(0, 0);
     renderChunk(curr);
-    if(curr->getX() > level.getCameraXOffset()){
+    /*if(curr->getX() > level.getCameraXOffset()){
 
         renderChunk(curr->getLeft());
 
@@ -218,9 +219,9 @@ void render(){
     }else if(curr->getY() < level.getCameraYOffset()){
 
         renderChunk(curr->getDown());
-    }
+    } */
 
-    renderer.drawImage(playerT.getImage(), level.getPlayer().getX(), level.getPlayer().getY(), playerT.getHeight(), playerT.getWidth());
+    renderer.drawImage(playerT.getImage(), level.getPlayer().getX() - level.getCameraXOffset(), level.getPlayer().getY() - level.getCameraYOffset(), playerT.getHeight(), playerT.getWidth());
 
     renderer.render();
     frames++;
@@ -238,11 +239,12 @@ void renderChunk(Chunk *toRender){
     int dx = 0;
     int dy = 0;
 
-    for(int i = 0; i < (renderer.getScreenWidth() * renderer.getScreenHeight()) / grassT.getWidth(); i++){
+    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
 
         int xpoint = dx + toRender->getX() - level.getCameraXOffset();
         int ypoint = dy + toRender->getY() - level.getCameraYOffset();
-        if(xpoint >= 0 && xpoint <= renderer.getScreenWidth() && ypoint >= 0 && ypoint <= renderer.getScreenHeight()){
+
+        if( getRectangleCollision(xpoint, ypoint, grassT.getWidth(), grassT.getHeight(), 0, 0, renderer.getScreenWidth(), renderer.getScreenHeight()) ){
 
             renderer.drawImage(grassT.getImage(), xpoint, ypoint, grassT.getWidth(), grassT.getHeight());
         }
