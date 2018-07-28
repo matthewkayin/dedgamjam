@@ -8,7 +8,7 @@ RDIR = rel
 DDIR = dbg
 IDIR = include
 
-SRCS = main.cpp
+SRCS = main.cpp renderer.cpp
 OBJS = $(SRCS:%.cpp=%.o)
 RLS = $(addprefix $(RDIR)/, $(OBJS))
 DBG = $(addprefix $(DDIR)/, $(OBJS))

@@ -1,6 +1,8 @@
 //Gam Jam
 //main.cpp
 
+#include "renderer.hpp"
+
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -8,13 +10,18 @@ void input();
 void update(int delta);
 void render();
 
+Renderer renderer;
 int updates;
 int frames;
 bool running;
 
 int main(int argc, char* argv[]){
 
-    std::cout << "booperoni and cheese hello darkness my old friend not again or it might be okay" << std::endl;
+    //Init the renderer, exit program if initialization failed
+    if(!renderer.initGFX("Raycasting", 640, 480)){
+
+        return 0;
+    }
 
     //timing constants
     const Uint32 SECOND = 1000;
@@ -41,6 +48,8 @@ int main(int argc, char* argv[]){
     loopStart = SDL_GetTicks();
     secStart = loopStart;
     frameStart = loopStart;
+
+    running = true;
 
     //main gameloop, set running to false to exit
     while(running){
@@ -109,7 +118,19 @@ int main(int argc, char* argv[]){
 
 void input(){
 
+    //events are for when things happen such as a mouse is clicked or a key is initially pressed/released
+    SDL_Event e;
 
+    while(SDL_PollEvent(&e) != 0){
+
+        if(e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)){
+
+            running = false;
+        }
+    }
+
+    //scancodes and keyboard state are for figuring out which keys are being held in
+    const Uint8 *state = SDL_GetKeyboardState(nullptr);
 }
 
 void update(int delta){
@@ -117,7 +138,7 @@ void update(int delta){
     updates += delta;
 }
 
-void paint(){
+void render(){
 
     frames++;
 }
