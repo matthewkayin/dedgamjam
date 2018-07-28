@@ -13,6 +13,7 @@ Entity::Entity(){
 
 void Entity::updatePosition(int delta){
 
+    std::cout << "update position, delta =  " << delta << std::endl;
     x += (xSpeed * delta);
     y += (ySpeed * delta);
 }

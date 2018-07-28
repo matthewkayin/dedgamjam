@@ -6,12 +6,14 @@
 #include "level.hpp"
 
 #include <SDL2/SDL.h>
+
 #include <iostream>
 
 void input();
 void update(int delta);
 void render();
 void renderChunk(Chunk *toRender);
+bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 
 Texture grassT;
 Texture playerT;
@@ -256,4 +258,34 @@ void renderChunk(Chunk *toRender){
             dy += 64;
         }
     }
+}
+
+bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
+
+    int xpoint = x;
+    int ypoint = y;
+    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
+
+        return true;
+    }
+
+    xpoint = x + width;
+    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
+
+        return true;
+    }
+
+    ypoint = y + height;
+    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
+
+        return true;
+    }
+
+    xpoint = x - width;
+    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
+
+        return true;
+    }
+
+    return false;
 }

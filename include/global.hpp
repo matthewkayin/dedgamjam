@@ -16,34 +16,4 @@ enum ImgCode{
     BULLET
 };
 
-bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
-
-    int xpoint = x;
-    int ypoint = y;
-    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
-
-        return true;
-    }
-
-    xpoint = x + width;
-    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
-
-        return true;
-    }
-
-    ypoint = y + height;
-    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
-
-        return true;
-    }
-
-    xpoint = x - width;
-    if ( xpoint >= xtwo && xpoint <= xtwo + widthtwo && ypoint >= ytwo && ypoint <= ytwo + heighttwo ){
-
-        return true;
-    }
-
-    return false;
-}
-
 #endif

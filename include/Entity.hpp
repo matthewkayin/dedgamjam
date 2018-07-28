@@ -1,5 +1,5 @@
-#ifndef Entity_hpp
-#define Entity_hpp
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "global.hpp"
 

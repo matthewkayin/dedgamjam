@@ -26,6 +26,19 @@ bool Renderer::initGFX(std::string title, int width, int height){
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE); //alternatively, SDL_RENDERER_ACCELERATED for hardware renderering
 
+    int imgFlags = IMG_INIT_PNG;
+
+    if(!(IMG_Init(imgFlags) & imgFlags)){
+
+        std::cout << "Unable to initialize SDL_image! SDL Error: " << IMG_GetError() << std::endl;
+        return false;
+    }
+
+    if(TTF_Init() == -1){
+
+        std::cout << "Unable to initialize SDL_ttf! SDL Error: " << TTF_GetError() << std::endl;
+    } 
+
     if(!window || !renderer){
 
         giveSDLError("unable to initialize window");
