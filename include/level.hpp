@@ -22,6 +22,7 @@ public:
     void updateMonsterDir();
 
     Player* getPlayer();
+    Uint32 getSpawnTime();
     bool getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
     bool xIntersectY(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 
