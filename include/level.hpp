@@ -19,6 +19,7 @@ public:
     Monster* getMonsterArray();
 
     Player* getPlayer();
+    bool getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 
 private:
     int chunkwidth;
