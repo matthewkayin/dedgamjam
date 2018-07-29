@@ -58,6 +58,7 @@ bool Renderer::initGFX(std::string title, int width, int height){
     }
 
     isFullscreen = false;
+    toggleFullscreen();
     SDL_ShowCursor(SDL_DISABLE);
 
     initializeColorConstants();

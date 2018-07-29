@@ -80,7 +80,7 @@ int reddoty;
 int main(int argc, char* argv[]){
 
     //Init the renderer, exit program if initialization failed
-    if(!renderer.initGFX("Raycasting", 1280, 720)){
+    if(!renderer.initGFX("Hands Off!", 1280, 720)){
 
         return 0;
     }
@@ -518,7 +518,7 @@ void render(){
         }
 
         if(gamestate == 2){
-            
+
             renderer.drawImage(playerPoofT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerPoofT.getWidth(), playerPoofT.getHeight());
             renderer.drawImage(gameoverT.getImage(), gameOverX - (gameoverT.getWidth() / 2), gameOverY - (gameoverT.getHeight() / 2), gameoverT.getWidth(), gameoverT.getHeight());
         }
