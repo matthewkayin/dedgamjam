@@ -267,11 +267,8 @@ void update(int delta){
         if((SDL_GetTicks() - releaseMonster) >= 3000){
             releaseMonster = SDL_GetTicks();
             level.createMonster();
-            std::cout << "Monster Created: " << level.getMonsterArray()[0].getX() << ", " << level.getMonsterArray()[0].getY() << std::endl;
-            std::cout << "Monster Created 2: " << level.getMonsterArray()[1].getX() << ", " << level.getMonsterArray()[1].getY() << std::endl;
         }
         level.updateMonsterDir();
-        //std::cout << "Update Monster Dir: " << level.getMonsterArray()[0].getX() << ", " << level.getMonsterArray()[0].getY() << std::endl;
 
         if(level.getPlayer()->getDead()){
 
@@ -330,12 +327,23 @@ void render(){
 
             if(hold[i].beingUsed()){
 
+                float adjustedDegree = hold[i].getDegree();
+                //adjustedDegree -= 90;
+                if(adjustedDegree >= 360){
+
+                    adjustedDegree -= 360;
+
+                }else if(adjustedDegree < 0){
+
+                    adjustedDegree += 360;
+                }
+
                 if(i % 3 == 0)
-                    renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+                    renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth(), adjustedDegree);
                 if(i % 3 == 1)
-                    renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth());
+                    renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth(), adjustedDegree);
                 if(i % 3 == 2)
-                    renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth());
+                    renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth(), adjustedDegree);
             }
         }
 

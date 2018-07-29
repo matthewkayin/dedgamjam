@@ -41,3 +41,13 @@ void Monster::setUse(bool value){
 
     inUse = value;
 }
+
+void Monster::setDegree(float value){
+
+    degree = value;
+}
+
+float Monster::getDegree() const{
+
+    return degree;
+}

@@ -114,7 +114,6 @@ void Level::createMonster(){
                 break;
         }
 
-        //std::cout << i << ", " << monsterArray[i].getX() << ", " << monsterArray[i].getY() << std::endl;
     }
 }
 
@@ -162,6 +161,7 @@ void Level::updateMonsterDir(){
                 yDif = yDif * -1;
 
             double radi = atan(xDif/yDif);
+            monsterArray[i].setDegree(toDegrees(radi));
 
             monsterArray[i].setDx(monsterArray[i].getSpeed() * sin(radi));
             monsterArray[i].setDy(monsterArray[i].getSpeed() * cos(radi));
