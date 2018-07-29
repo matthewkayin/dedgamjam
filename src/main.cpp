@@ -267,8 +267,11 @@ void update(int delta){
         if((SDL_GetTicks() - releaseMonster) >= 3000){
             releaseMonster = SDL_GetTicks();
             level.createMonster();
+            std::cout << "Monster Created: " << level.getMonsterArray()[0].getX() << ", " << level.getMonsterArray()[0].getY() << std::endl;
+            std::cout << "Monster Created 2: " << level.getMonsterArray()[1].getX() << ", " << level.getMonsterArray()[1].getY() << std::endl;
         }
         level.updateMonsterDir();
+        //std::cout << "Update Monster Dir: " << level.getMonsterArray()[0].getX() << ", " << level.getMonsterArray()[0].getY() << std::endl;
 
         if(level.getPlayer()->getDead()){
 

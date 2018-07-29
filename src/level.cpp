@@ -70,13 +70,14 @@ void Level::createMonster(){
 
     bool foundMonster = false;
 
-    int i;
+    int index;
 
-    for(i=0; i<100 && !foundMonster; i++){
+    for(int i=0; i<100 && !foundMonster; i++){
 
         if(!monsterArray[i].beingUsed()){
             monsterArray[i].setUse(true);
             foundMonster = true;
+            index = i;
         }
     }
 
@@ -87,33 +88,33 @@ void Level::createMonster(){
 
                 //left
             case 0:
-                monsterArray[i].setX(0);
-                monsterArray[i].setY(rand() % (chunkheight - 48));
+                monsterArray[index].setX(0);
+                monsterArray[index].setY(rand() % (chunkheight - 48));
                 break;
 
                 //top
             case 1:
-                monsterArray[i].setX(rand() % (chunkwidth - 48));
-                monsterArray[i].setY(0);
+                monsterArray[index].setX(rand() % (chunkwidth - 48));
+                monsterArray[index].setY(0);
                 break;
 
                 //right
             case 2:
-                monsterArray[i].setX(chunkwidth - 48);
-                monsterArray[i].setY(rand() % (chunkheight - 48));
+                monsterArray[index].setX(chunkwidth - 48);
+                monsterArray[index].setY(rand() % (chunkheight - 48));
                 break;
 
                 //bottom
             case 3:
-                monsterArray[i].setX(rand() % (chunkwidth - 48));
-                monsterArray[i].setY(chunkheight - 48);
+                monsterArray[index].setX(rand() % (chunkwidth - 48));
+                monsterArray[index].setY(chunkheight - 48);
                 break;
 
             default:
                 break;
         }
 
-        std::cout << i << ", " << monsterArray[i].getX() << ", " << monsterArray[i].getY() << std::endl;
+        //std::cout << i << ", " << monsterArray[i].getX() << ", " << monsterArray[i].getY() << std::endl;
     }
 }
 

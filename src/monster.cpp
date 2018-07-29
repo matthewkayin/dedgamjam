@@ -23,12 +23,12 @@ int Monster::getHealth(){
 }
 
 bool Monster::beingUsed(){
-    
+
     return inUse;
 }
 
 int Monster::getSpeed(){
-    
+
     return mSpeed;
 }
 
@@ -38,6 +38,6 @@ void Monster::setHealth(int value){
 }
 
 void Monster::setUse(bool value){
-    
+
     inUse = value;
 }
