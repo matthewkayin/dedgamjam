@@ -15,6 +15,7 @@ void update(int delta);
 void render();
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 float getPlayerAngle();
+float getMonsterAngle(int monsterx, int monstery);
 void reset();
 
 Texture grassT;
@@ -328,15 +329,8 @@ void render(){
             if(hold[i].beingUsed()){
 
                 float adjustedDegree = hold[i].getDegree();
-                //adjustedDegree -= 90;
-                if(adjustedDegree >= 360){
 
-                    adjustedDegree -= 360;
-
-                }else if(adjustedDegree < 0){
-
-                    adjustedDegree += 360;
-                }
+                adjustedDegree = getMonsterAngle(hold[i].getX(), hold[i].getY());
 
                 if(i % 3 == 0)
                     renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth(), adjustedDegree);
@@ -487,6 +481,73 @@ float getPlayerAngle(){
             playerAngle = 180;
 
         }else if(mousex - playerx > 0){
+
+            playerAngle = 0;
+        }
+    }
+
+    return playerAngle;
+}
+
+float getMonsterAngle(int monsterx, int monstery){
+
+    int playerx = level.getPlayer()->getX();
+    int playery = level.getPlayer()->getY();
+
+    int xdist = pow(playerx - monsterx, 2);
+    int ydist = pow(playery - monstery, 2);
+    float playerAngle = toDegrees(atan2(ydist, xdist));
+
+    if(playerx - monsterx < 0 && monstery - playery > 0){
+
+        playerAngle += 180;
+
+    }else if(playerx - monsterx > 0 && monstery - playery < 0){
+
+        playerAngle += 180;
+
+    }else{
+
+        playerAngle = 90 - playerAngle;
+    }
+
+    if(playerx - monsterx > 0){
+
+        if(monstery - playery < 0){
+
+            playerAngle += 270;
+        }
+
+    }else if(playerx - monsterx < 0){
+
+        if(monstery - playery < 0){
+
+            playerAngle += 180;
+
+        }else if(monstery - playery > 0){
+
+            playerAngle += 90;
+        }
+    }
+
+    if(xdist == 0){
+
+        if(monstery - playery < 0){
+
+            playerAngle = 90;
+
+        }else{
+
+            playerAngle = 180;
+        }
+
+    }else if(ydist == 0){
+
+        if(playerx - monsterx < 0){
+
+            playerAngle = 180;
+
+        }else if(playerx - monsterx > 0){
 
             playerAngle = 0;
         }
