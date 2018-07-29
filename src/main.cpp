@@ -421,7 +421,7 @@ void render(){
 
             float playerAngle = getPlayerAngle();
             renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
-            std::cout << "playerAngle = " << playerAngle << std::endl;
+            //std::cout << "playerAngle = " << playerAngle << std::endl;
         }
         Bullet *curr = level.getPlayer()->getHead();
         while(curr != nullptr){

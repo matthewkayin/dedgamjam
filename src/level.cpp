@@ -47,8 +47,7 @@ void Level::update(int delta){
                 if(getRectCollision(monsterArray[i].getX(), monsterArray[i].getY(), monsterArray[i].getWidth(), monsterArray[i].getHeight(),
                     curr->getX(), curr->getY(), 8, 8)){
 
-                    killMonster(i);
-                    
+                    //sets poof to on and gets spot information
                     for(int j=0; j< 100 && !poofUsed; j++){
                     
                         if(!poofArray[j].isUsed()){
@@ -59,6 +58,8 @@ void Level::update(int delta){
                             poofUsed = true;
                         }
                     }
+                    
+                    killMonster(i);
                     
                     Bullet *next = curr->getNext();
                     player.killBullet(curr);
@@ -72,15 +73,14 @@ void Level::update(int delta){
                     curr = curr->getNext();
                 }
             }
+        }
+        
+        //updates poofs
+        if(poofArray[i].isUsed()){
             
-            //updates poofs
-            for(int i=0; i<100; i++){
-                
-                if(poofArray[i].isUsed()){
-                    if (!poofArray[i].keepShowing())
-                        poofArray[i].setUsed(false);
-                }
-            }
+            if (!poofArray[i].keepShowing())
+                poofArray[i].setUsed(false);
+            
         }
     }
 

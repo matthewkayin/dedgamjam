@@ -11,8 +11,8 @@ Poof::Poof(){
 }
 
 bool Poof::keepShowing(){
-    
-    return (SDL_GetTicks() - timeStarted > 500);
+        
+    return ((SDL_GetTicks() - timeStarted) < 500);
 }
 
 bool Poof::isUsed(){
@@ -51,8 +51,10 @@ void Poof::setY(int value){
 
 void Poof::setUsed(bool value){
     
-    if(value)
+    if(value == true){
+        
         timeStarted = SDL_GetTicks();
+    }
     
     used = value;
 }
