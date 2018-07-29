@@ -12,7 +12,7 @@ Poof::Poof(){
 
 bool Poof::keepShowing(){
     
-    return (timeStarted - SDL_GetTicks() > 500);
+    return (SDL_GetTicks() - timeStarted > 500);
 }
 
 bool Poof::isUsed(){

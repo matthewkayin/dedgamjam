@@ -37,7 +37,7 @@ void Level::update(int delta){
             }
 
             Bullet *curr = player.getHead();
-
+            bool poofUsed(false);
             //std::cout << "checking bullet collisions for monster #" << i << std::endl;
             while(curr != nullptr){
 
@@ -48,7 +48,7 @@ void Level::update(int delta){
                     curr->getX(), curr->getY(), 8, 8)){
 
                     killMonster(i);
-                    bool poofUsed(false);
+                    
                     for(int j=0; j< 100 && !poofUsed; j++){
                     
                         if(!poofArray[j].isUsed()){
@@ -56,6 +56,7 @@ void Level::update(int delta){
                             poofArray[j].setUsed(true);
                             poofArray[j].setX(monsterArray[i].getX());
                             poofArray[j].setY(monsterArray[i].getY());
+                            poofUsed = true;
                         }
                     }
                     
