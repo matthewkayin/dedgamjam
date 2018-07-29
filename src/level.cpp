@@ -217,19 +217,11 @@ Player* Level::getPlayer(){
 }
 
 Uint32 Level::getSpawnTime(){
-
-    int killed = player.getScore();
-
-    if(killed < 4)
-        return 3000;
-    else if(killed < 8)
-        return 2300;
-    else if(killed < 12)
-        return 1400;
-    else if(killed < 16)
-        return 700;
+    
+    if(player.getScore() < 25)
+        return(3000 - (112 * player.getScore()));
     else
-        return 200;
+        return 200;l
 }
 
 bool Level::getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
