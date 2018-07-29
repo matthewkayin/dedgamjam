@@ -277,7 +277,7 @@ void render(){
                 renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
             if(i % 3 == 1)
                 renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth());
-            if(i % 3 == 3)
+            if(i % 3 == 2)
                 renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth());
         }
     }
