@@ -421,7 +421,6 @@ void render(){
 
             float playerAngle = getPlayerAngle();
             renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
-            std::cout << "playerAngle = " << playerAngle << std::endl;
         }
         Bullet *curr = level.getPlayer()->getHead();
         while(curr != nullptr){
@@ -505,71 +504,7 @@ bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int yt
 
 float getPlayerAngle(){
 
-    int playerx = level.getPlayer()->getX() + (level.getPlayer()->getWidth() / 2);
-    int playery = level.getPlayer()->getY() + (level.getPlayer()->getHeight() / 2);
-    reddotx = playerx;
-    reddoty = playery;
-
-    int xdist = pow(mousex - playerx, 2);
-    int ydist = pow(mousey - playery, 2);
-    float playerAngle = toDegrees(atan2(ydist, xdist));
-
-    if(mousex - playerx < 0 && playery - mousey > 0){
-
-        playerAngle += 180;
-
-    }else if(mousex - playerx > 0 && playery - mousey < 0){
-
-        playerAngle += 180;
-
-    }else{
-
-        playerAngle = 90 - playerAngle;
-    }
-
-    if(mousex - playerx > 0){
-
-        if(playery - mousey < 0){
-
-            playerAngle += 270;
-        }
-
-    }else if(mousex - playerx < 0){
-
-        if(playery - mousey < 0){
-
-            playerAngle += 180;
-
-        }else if(playery - mousey > 0){
-
-            playerAngle += 90;
-        }
-    }
-
-    if(xdist == 0){
-
-        if(playery - mousey < 0){
-
-            playerAngle = 90;
-
-        }else{
-
-            playerAngle = 180;
-        }
-
-    }else if(ydist == 0){
-
-        if(mousex - playerx < 0){
-
-            playerAngle = 180;
-
-        }else if(mousex - playerx > 0){
-
-            playerAngle = 0;
-        }
-    }
-
-    return playerAngle;
+    return toDegrees(atan2((level.getPlayer()->getY() + (level.getPlayer()->getHeight() / 2)) - mousey, (level.getPlayer()->getX() + (level.getPlayer()->getWidth() / 2)) - mousex)) - 90;
 }
 
 float getMonsterAngle(int monsterx, int monstery){
