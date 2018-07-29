@@ -126,7 +126,8 @@ int main(int argc, char* argv[]){
         }
 
         loopStart = SDL_GetTicks();
-
+        level.updateMonsterDir();
+        
         //actual calling of game functions
         input();
         update(delta);

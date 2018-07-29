@@ -11,6 +11,7 @@ public:
     
     int getHealth();
     bool beingUsed();
+    int getSpeed();
     
     void setHealth(int value);
     void setUse(bool value);
