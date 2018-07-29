@@ -218,10 +218,13 @@ Player* Level::getPlayer(){
 
 Uint32 Level::getSpawnTime(){
     
-    if(player.getScore() < 25)
-        return(3000 - (112 * player.getScore()));
+    int capMon(30);
+    Uint32 quickest(250), slowest(3000), cap(200);
+    
+    if(player.getScore() < capMon)
+        return(slowest - (((slowest - quickest) / capMon) * player.getScore()));
     else
-        return 200;l
+        return cap;
 }
 
 bool Level::getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
