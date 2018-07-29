@@ -17,6 +17,8 @@ public:
 
     void createMonster();
     Monster* getMonsterArray();
+    void killMonster(int value);
+    void updateMonsterDir();
 
     Player* getPlayer();
     bool getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);

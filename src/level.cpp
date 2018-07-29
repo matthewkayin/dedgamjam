@@ -100,10 +100,32 @@ void Level::createMonster(){
     }
 }
 
+void Level::killMonster(int value){
+
+    //value is the index of the monster being killed
+    monsterArray[value].setUse(false);
+}
+
 
 Monster* Level::getMonsterArray(){
 
     return monsterArray;
+}
+
+void Level::updateMonsterDir(){
+
+    int xDif, yDif;
+
+    for(int i=0; i<100; i++){
+
+        if(monsterArray[i].beingUsed()){
+
+            xDif = (player.getX() - monsterArray[i].getX());
+            yDif = (player.getY() - monsterArray[i].getY());
+            
+
+        }
+    }
 }
 
 Player* Level::getPlayer(){
