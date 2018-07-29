@@ -18,6 +18,8 @@ Bullet::Bullet(int xi, int yi, float di){
     dx = cos(toRadians(degree)) * SPEED;
     dy = sin(toRadians(degree)) * -SPEED;
 
+    std::cout << dx << ", " << dy << std::endl;
+
     next = nullptr;
     prev = nullptr;
 }
