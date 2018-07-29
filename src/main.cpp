@@ -41,6 +41,7 @@ Texture gameoverT;
 Texture handPaperT;
 Texture handScissorT;
 Texture poofT;
+Texture playerPoofT;
 Texture titleT;
 Texture playText;
 Texture aboutText;
@@ -103,6 +104,7 @@ int main(int argc, char* argv[]){
     handPaperT.import(renderer.getRenderer(), "res/gfx/paperhand.png");
     handScissorT.import(renderer.getRenderer(), "res/gfx/scissorhand.png");
     poofT.import(renderer.getRenderer(), "res/gfx/Poof.png");
+    playerPoofT.import(renderer.getRenderer(), "res/gfx/playerPoof.png");
     titleT.import(renderer.getRenderer(), "res/gfx/title.png");
     titleAboutT.import(renderer.getRenderer(), "res/gfx/title-about.png");
     playText.import(renderer.getRenderer(), "PLAY", "monospace.ttf", 60, SDL_Color{0, 148, 255});
@@ -516,7 +518,8 @@ void render(){
         }
 
         if(gamestate == 2){
-
+            
+            renderer.drawImage(playerPoofT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerPoofT.getWidth(), playerPoofT.getHeight());
             renderer.drawImage(gameoverT.getImage(), gameOverX - (gameoverT.getWidth() / 2), gameOverY - (gameoverT.getHeight() / 2), gameoverT.getWidth(), gameoverT.getHeight());
         }
 

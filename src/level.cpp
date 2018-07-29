@@ -85,18 +85,16 @@ void Level::update(int delta){
                     curr = curr->getNext();
                 }
             }
-
-            //updates poofs
-            for(int i=0; i<100; i++){
-
-                if(poofArray[i].isUsed()){
-                    if (!poofArray[i].keepShowing())
-                        poofArray[i].setUsed(false);
-                }
-            }
         }
-    }
 
+        //updates poofs
+        if(poofArray[i].isUsed()){
+
+            if (!poofArray[i].keepShowing())
+                poofArray[i].setUsed(false);
+        }
+
+    }
     player.updatePosition(SDL_GetTicks(), delta, chunkwidth, chunkheight);
 }
 
@@ -233,18 +231,13 @@ Player* Level::getPlayer(){
 
 Uint32 Level::getSpawnTime(){
 
-    int killed = player.getScore();
+    int capMon(30);
+    Uint32 quickest(250), slowest(3000), cap(200);
 
-    if(killed < 4)
-        return 3000;
-    else if(killed < 8)
-        return 2300;
-    else if(killed < 12)
-        return 1400;
-    else if(killed < 16)
-        return 700;
+    if(player.getScore() < capMon)
+        return(slowest - (((slowest - quickest) / capMon) * player.getScore()));
     else
-        return 200;
+        return cap;
 }
 
 bool Level::getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
