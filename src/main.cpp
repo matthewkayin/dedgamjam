@@ -200,6 +200,10 @@ int main(int argc, char* argv[]){
     fpsText.free();
     upsText.free();
     handRockT.free();
+    Mix_FreeChunk(shoot);
+    Mix_FreeChunk(hit);
+    Mix_FreeChunk(lose);
+    Mix_FreeChunk(beep);
 
     return 0;
 }
