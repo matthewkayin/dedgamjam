@@ -35,6 +35,7 @@ Texture playText;
 Texture aboutText;
 Texture descText;
 Texture titleAboutT;
+Texture backText;
 
 
 bool displayFPS = false;
@@ -84,6 +85,7 @@ int main(int argc, char* argv[]){
     titleAboutT.import(renderer.getRenderer(), "res/gfx/title-about.png");
     playText.import(renderer.getRenderer(), "PLAY", "monospace.ttf", 60, SDL_Color{0, 148, 255});
     aboutText.import(renderer.getRenderer(), "ABOUT", "monospace.ttf", 60, SDL_Color{0, 148, 255});
+    backText.import(renderer.getRenderer(), "BACK", "monospace.ttf", 60, SDL_Color{0, 148, 255});
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -233,7 +235,14 @@ void input(){
 
                     }else if(uifocus == 2){
 
-                        uistate = 2;
+                        uistate = 1;
+                    }
+
+                }else if(uistate == 1){
+
+                    if(uifocus == 1){
+
+                        uistate = 0;
                     }
                 }
 
@@ -307,6 +316,17 @@ void update(int delta){
 
                 uifocus = -1;
             }
+
+        }else if(uistate == 1){
+
+            if(mousex >= 170 && mousex <= 170 + backText.getWidth() && mousey >= 360 && mousey <= 360 + backText.getHeight()){
+
+                uifocus = 1;
+
+            }else{
+
+                uifocus = -1;
+            }
         }
 
     }else if(gamestate == 1){
@@ -367,6 +387,12 @@ void render(){
         }else if(uistate == 1){
 
             renderer.drawImage(titleAboutT.getImage(), 0, 0, 1280, 768);
+            renderer.drawImage(backText.getImage(), 170, 360, backText.getWidth(), backText.getHeight());
+
+            if(uifocus == 1){
+
+                renderer.drawImage(playerT.getImage(), 170 + backText.getWidth() + 20, 360 + (backText.getHeight() / 2) - (playerT.getHeight() / 2), playerT.getWidth(), playerT.getHeight(), -90);
+            }
         }
 
     }else{
