@@ -29,11 +29,13 @@ Texture handRockT;
 Texture gameoverT;
 Texture handPaperT;
 Texture handScissorT;
+Texture poofT;
 Texture titleT;
 Texture playText;
 Texture aboutText;
 Texture descText;
 Texture titleAboutT;
+
 
 bool displayFPS = false;
 
@@ -74,6 +76,7 @@ int main(int argc, char* argv[]){
     gameoverT.import(renderer.getRenderer(), "res/gfx/gameover.png");
     handPaperT.import(renderer.getRenderer(), "res/gfx/paperhand.png");
     handScissorT.import(renderer.getRenderer(), "res/gfx/scissorhand.png");
+    poofT.import(renderer.getRenderer(), "res/gfx/Poof.png");
     titleT.import(renderer.getRenderer(), "res/gfx/title.png");
     titleAboutT.import(renderer.getRenderer(), "res/gfx/title-about.png");
     playText.import(renderer.getRenderer(), "PLAY", "monospace.ttf", 60, SDL_Color{0, 148, 255});
@@ -388,6 +391,7 @@ void render(){
         }
 
         Monster* hold = level.getMonsterArray();
+        Poof* holdPoof = level.getPoofArray();
         for(int i=0; i<100; i++){
 
             if(hold[i].beingUsed()){
@@ -402,6 +406,11 @@ void render(){
                     renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth(), adjustedDegree);
                 if(i % 3 == 2)
                     renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth(), adjustedDegree);
+            }
+            
+            if(holdPoof[i].isUsed()){
+             
+                renderer.drawImage(poofT.getImage(), holdPoof[i].getX(), holdPoof[i].getY(), poofT.getHeight(), poofT.getWidth());
             }
         }
 
