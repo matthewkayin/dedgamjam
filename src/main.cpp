@@ -30,6 +30,10 @@ Texture gameoverT;
 Texture handPaperT;
 Texture handScissorT;
 Texture poofT;
+Texture titleT;
+Texture playText;
+Texture aboutText;
+
 
 bool displayFPS = false;
 
@@ -51,6 +55,7 @@ bool running;
 
 Uint32 releaseMonster = 0;
 int score = -1;
+int uifocus = -1;
 
 int main(int argc, char* argv[]){
 
@@ -69,10 +74,13 @@ int main(int argc, char* argv[]){
     handPaperT.import(renderer.getRenderer(), "res/gfx/paperhand.png");
     handScissorT.import(renderer.getRenderer(), "res/gfx/scissorhand.png");
     poofT.import(renderer.getRenderer(), "res/gfx/Poof.png");
+    titleT.import(renderer.getRenderer(), "res/gfx/title.png");
+    playText.import(renderer.getRenderer(), "PLAY", "monospace.ttf", 60, SDL_Color{0, 148, 255});
+    aboutText.import(renderer.getRenderer(), "ABOUT", "monospace.ttf", 60, SDL_Color{0, 148, 255});
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
-    gamestate = 1;
+    gamestate = 0;
     gameOverX = renderer.getScreenWidth() / 2;
     gameOverY = 0;
 
@@ -262,12 +270,26 @@ void update(int delta){
     if(gamestate == 0){
 
         //title menu
+        if(mousex >= 300 - (playText.getWidth() / 2) && mousex <= 300 - (playText.getWidth() / 2) + playText.getWidth() &&
+            mousey >= 230 && mousey <= 230 + playText.getHeight()){
+
+            uifocus = 1;
+
+        }else if(mousex >= 300 - (aboutText.getWidth() / 2) && mousex <= 300 - (aboutText.getWidth() / 2) + aboutText.getWidth() &&
+            mousey >= 300 && mousey <= 300 + playText.getHeight()){
+
+            uifocus = 2;
+
+        }else{
+
+            uifocus = -1;
+        }
 
     }else if(gamestate == 1){
 
         level.update(delta);
 
-        
+
         if((SDL_GetTicks() - releaseMonster) >= level.getSpawnTime()){
             releaseMonster = SDL_GetTicks();
             level.createMonster();
@@ -301,6 +323,18 @@ void render(){
     if(gamestate == 0){
 
         //render title menu
+        renderer.drawImage(titleT.getImage(), 0, 0, 1280, 768);
+        renderer.drawImage(playText.getImage(), 300 - (playText.getWidth() / 2), 230, playText.getWidth(), playText.getHeight());
+        renderer.drawImage(aboutText.getImage(), 300 - (aboutText.getWidth() / 2), 300, aboutText.getWidth(), aboutText.getHeight());
+
+        if(uifocus == 1){
+
+            renderer.drawImage(playerT.getImage(), 300 - (playText.getWidth() / 2) + playText.getWidth() + 20, 230 + (playText.getHeight() / 2) - (playerT.getHeight() / 2), playerT.getWidth(), playerT.getHeight(), -90);
+
+        }else if(uifocus == 2){
+
+            renderer.drawImage(playerT.getImage(), 300 - (aboutText.getWidth() / 2) + aboutText.getWidth() + 20, 300 + (aboutText.getHeight() / 2) - (playerT.getHeight() / 2), playerT.getWidth(), playerT.getHeight(), -90);
+        }
 
     }else{
 
@@ -388,8 +422,9 @@ void render(){
         }
 
         renderer.drawImage(scoreText.getImage(), renderer.getScreenWidth() - scoreText.getWidth(), 0, scoreText.getWidth(), scoreText.getHeight());
-        renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
     }
+
+    renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
 
     if(displayFPS){
 
