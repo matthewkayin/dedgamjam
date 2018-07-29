@@ -40,7 +40,8 @@ void Level::update(int delta){
                 if(getRectCollision(monsterArray[i].getX(), monsterArray[i].getY(), monsterArray[i].getWidth(), monsterArray[i].getHeight(),
                     curr->getX(), curr->getY(), 8, 8)){
 
-                    std::cout << "monster is hit" << std::endl;
+                    killMonster(i);
+                    break;
                 }
 
                 curr = curr->getNext();
@@ -122,7 +123,7 @@ void Level::updateMonsterDir(){
 
             xDif = (player.getX() - monsterArray[i].getX());
             yDif = (player.getY() - monsterArray[i].getY());
-            
+
 
         }
     }

@@ -60,6 +60,16 @@ int Bullet::getY() const{
     return y;
 }
 
+int Bullet::getDx() const{
+
+    return dx;
+}
+
+int Bullet::getDy() const{
+
+    return dy;
+}
+
 float Bullet::getDegree() const{
 
     return degree;
