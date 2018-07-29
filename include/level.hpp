@@ -5,6 +5,7 @@
 #define LEVEL_H
 #include "Player.hpp"
 #include "monster.hpp"
+#include <ctime>
 
 class Level{
 
