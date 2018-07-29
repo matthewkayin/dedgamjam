@@ -17,6 +17,8 @@ public:
 
     void createMonster();
     Monster* getMonsterArray();
+    void killMonster(int value);
+    void updateMonsterDir();
 
     Player* getPlayer();
 
