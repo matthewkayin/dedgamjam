@@ -12,7 +12,7 @@ Level::Level(int screenwidth, int screenheight){
     player = Player(SDL_GetTicks());
     player.setX((screenwidth + player.getWidth()) / 2);
     player.setY((screenheight + player.getHeight()) / 2);
-    
+
     srand(time(NULL));
 }
 
@@ -42,7 +42,8 @@ void Level::update(int delta){
                 if(getRectCollision(monsterArray[i].getX(), monsterArray[i].getY(), monsterArray[i].getWidth(), monsterArray[i].getHeight(),
                     curr->getX(), curr->getY(), 8, 8)){
 
-                    std::cout << "monster is hit" << std::endl;
+                    killMonster(i);
+                    break;
                 }
 
                 curr = curr->getNext();
@@ -115,7 +116,6 @@ Monster* Level::getMonsterArray(){
 }
 
 void Level::updateMonsterDir(){
-
     
     int xDif, yDif, pos(0);
     

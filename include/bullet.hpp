@@ -18,6 +18,8 @@ public:
     void setPrev(Bullet *other);
     int getX() const;
     int getY() const;
+    int getDx() const;
+    int getDy() const;
     float getDegree() const;
 private:
     const float SPEED = 15;
