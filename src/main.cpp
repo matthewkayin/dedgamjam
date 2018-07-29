@@ -60,6 +60,9 @@ int score = -1;
 int uifocus = -1;
 int uistate = 0;
 
+int reddotx;
+int reddoty;
+
 int main(int argc, char* argv[]){
 
     //Init the renderer, exit program if initialization failed
@@ -407,9 +410,9 @@ void render(){
                 if(i % 3 == 2)
                     renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth(), adjustedDegree);
             }
-            
+
             if(holdPoof[i].isUsed()){
-             
+
                 renderer.drawImage(poofT.getImage(), holdPoof[i].getX(), holdPoof[i].getY(), poofT.getHeight(), poofT.getWidth());
             }
         }
@@ -418,6 +421,7 @@ void render(){
 
             float playerAngle = getPlayerAngle();
             renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
+            std::cout << "playerAngle = " << playerAngle << std::endl;
         }
         Bullet *curr = level.getPlayer()->getHead();
         while(curr != nullptr){
@@ -453,6 +457,9 @@ void render(){
 
         renderer.drawImage(scoreText.getImage(), renderer.getScreenWidth() - scoreText.getWidth(), 0, scoreText.getWidth(), scoreText.getHeight());
     }
+
+    renderer.setRenderDrawColor(renderer.red);
+    renderer.fillRect(reddotx - 2, reddoty - 2, 4, 4);
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
 
@@ -498,8 +505,10 @@ bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int yt
 
 float getPlayerAngle(){
 
-    int playerx = level.getPlayer()->getX();
-    int playery = level.getPlayer()->getY() + level.getPlayer()->getHeight();
+    int playerx = level.getPlayer()->getX() + (level.getPlayer()->getWidth() / 2);
+    int playery = level.getPlayer()->getY() + (level.getPlayer()->getHeight() / 2);
+    reddotx = playerx;
+    reddoty = playery;
 
     int xdist = pow(mousex - playerx, 2);
     int ydist = pow(mousey - playery, 2);
