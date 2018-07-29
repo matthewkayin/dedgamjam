@@ -28,12 +28,16 @@ public:
     bool getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
     bool xIntersectY(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 
+    bool getShouldPlayHit() const;
+    void setShouldPlayHit(bool value);
+
 private:
     int chunkwidth;
     int chunkheight;
     Player player;
     Monster monsterArray[100];
     Poof poofArray[100];
+    bool shouldPlayHit;
 };
 
 #endif

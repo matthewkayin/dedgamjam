@@ -13,11 +13,23 @@ Level::Level(int screenwidth, int screenheight){
     player.setX((screenwidth + player.getWidth()) / 2);
     player.setY((screenheight + player.getHeight()) / 2);
 
+    shouldPlayHit = false;
+
     srand(time(NULL));
 }
 
 Level::~Level(){
 
+}
+
+bool Level::getShouldPlayHit() const{
+
+    return shouldPlayHit;
+}
+
+void Level::setShouldPlayHit(bool value){
+
+    shouldPlayHit = value;
 }
 
 void Level::update(int delta){
@@ -48,6 +60,7 @@ void Level::update(int delta){
                     (int)(curr->getX()), (int)(curr->getY()), 12, 12)){
 
                     killMonster(i);
+                    shouldPlayHit = true;
 
                     for(int j=0; j< 100 && !poofUsed; j++){
 

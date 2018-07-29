@@ -29,7 +29,7 @@ bool Renderer::initGFX(std::string title, int width, int height){
     SCREEN_WIDTH = width;
     SCREEN_HEIGHT = height;
 
-    if(SDL_Init(SDL_INIT_VIDEO) < 0){
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0){
 
         giveSDLError("unable to initialize SDL");
         return false;SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);

@@ -6,6 +6,7 @@
 #include "level.hpp"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 #include <iostream>
 #include <cmath>
@@ -17,6 +18,16 @@ bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int yt
 float getPlayerAngle();
 float getMonsterAngle(int monsterx, int monstery);
 void reset();
+
+void playShoot();
+void playHit();
+void playLose();
+void playBeep();
+
+Mix_Chunk* shoot = nullptr;
+Mix_Chunk* hit = nullptr;
+Mix_Chunk* lose = nullptr;
+Mix_Chunk* beep = nullptr;
 
 Texture grassT;
 Texture playerT;
@@ -72,6 +83,16 @@ int main(int argc, char* argv[]){
 
         return 0;
     }
+
+    if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
+
+        return 0;
+    }
+
+    shoot = Mix_LoadWAV("res/sfx/shoot.wav");
+    hit = Mix_LoadWAV("res/sfx/hit.wav");
+    lose = Mix_LoadWAV("res/sfx/lose.wav");
+    beep = Mix_LoadWAV("res/sfx/beep.wav");
 
     grassT.import(renderer.getRenderer(), "res/gfx/grass-wrapped.png");
     playerT.import(renderer.getRenderer(), "res/gfx/fingergun.png");
@@ -233,10 +254,12 @@ void input(){
 
                     if(uifocus == 1){
 
+                        playBeep();
                         gamestate = 1;
 
                     }else if(uifocus == 2){
 
+                        playBeep();
                         uistate = 1;
                     }
 
@@ -244,12 +267,14 @@ void input(){
 
                     if(uifocus == 1){
 
+                        playBeep();
                         uistate = 0;
                     }
                 }
 
             }else if(gamestate == 1){
 
+                playShoot();
                 level.getPlayer()->shoot(getPlayerAngle());
 
             }else if(gamestate == 2){
@@ -344,7 +369,14 @@ void update(int delta){
 
         if(level.getPlayer()->getDead()){
 
+            playLose();
             gamestate = 2;
+        }
+
+        if(level.getShouldPlayHit()){
+
+            playHit();
+            level.setShouldPlayHit(false);
         }
 
     }else if(gamestate == 2){
@@ -479,7 +511,6 @@ void render(){
                 adjustedDegree += 360;
             }
 
-            std::cout << "bullet coords" << curr->getX() << ", " << curr->getY() << std::endl;
             renderer.drawImage(bulletT.getImage(), (int)(curr->getX()), (int)(curr->getY()), bulletT.getWidth(), bulletT.getHeight(), -adjustedDegree);
             curr = curr->getNext();
         }
@@ -492,9 +523,6 @@ void render(){
         renderer.drawImage(scoreText.getImage(), renderer.getScreenWidth() - scoreText.getWidth(), 0, scoreText.getWidth(), scoreText.getHeight());
         renderer.drawImage(highscoreText.getImage(), renderer.getScreenWidth() - highscoreText.getWidth(), 20, highscoreText.getWidth(), highscoreText.getHeight());
     }
-
-    renderer.setRenderDrawColor(renderer.red);
-    renderer.fillRect(reddotx - 2, reddoty - 2, 4, 4);
 
     renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
 
@@ -619,4 +647,24 @@ void reset(){
     highscoreText.import(renderer.getRenderer(), "High Score: " + std::to_string(highscore), "monospace.ttf", 20, SDL_Color{255, 255, 0});
 
     gamestate = 1;
+}
+
+void playShoot(){
+
+    Mix_PlayChannel(-1, shoot, 0);
+}
+
+void playHit(){
+
+    Mix_PlayChannel(-1, hit, 0);
+}
+
+void playLose(){
+
+    Mix_PlayChannel(-1, lose, 0);
+}
+
+void playBeep(){
+
+    Mix_PlayChannel(-1, beep, 0);
 }
