@@ -35,8 +35,10 @@ Texture playText;
 Texture aboutText;
 Texture descText;
 Texture titleAboutT;
+Texture backText;
+Texture highscoreText;
 
-
+int highscore = 0;
 bool displayFPS = false;
 
 Renderer renderer;
@@ -84,6 +86,8 @@ int main(int argc, char* argv[]){
     titleAboutT.import(renderer.getRenderer(), "res/gfx/title-about.png");
     playText.import(renderer.getRenderer(), "PLAY", "monospace.ttf", 60, SDL_Color{0, 148, 255});
     aboutText.import(renderer.getRenderer(), "ABOUT", "monospace.ttf", 60, SDL_Color{0, 148, 255});
+    backText.import(renderer.getRenderer(), "BACK", "monospace.ttf", 60, SDL_Color{0, 148, 255});
+    highscoreText.import(renderer.getRenderer(), "High Score: " + std::to_string(highscore), "monospace.ttf", 20, SDL_Color{255, 255, 0});
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -233,7 +237,14 @@ void input(){
 
                     }else if(uifocus == 2){
 
-                        uistate = 2;
+                        uistate = 1;
+                    }
+
+                }else if(uistate == 1){
+
+                    if(uifocus == 1){
+
+                        uistate = 0;
                     }
                 }
 
@@ -307,6 +318,17 @@ void update(int delta){
 
                 uifocus = -1;
             }
+
+        }else if(uistate == 1){
+
+            if(mousex >= 170 && mousex <= 170 + backText.getWidth() && mousey >= 360 && mousey <= 360 + backText.getHeight()){
+
+                uifocus = 1;
+
+            }else{
+
+                uifocus = -1;
+            }
         }
 
     }else if(gamestate == 1){
@@ -334,6 +356,12 @@ void update(int delta){
         }else{
 
             gameOverY += 3;
+        }
+
+        if(score > highscore){
+
+            highscoreText.import(renderer.getRenderer(), "NEW HIGH SCORE!", "monospace.ttf", 20, SDL_Color{255, 255, 0});
+            highscore = score;
         }
     }
 
@@ -367,6 +395,12 @@ void render(){
         }else if(uistate == 1){
 
             renderer.drawImage(titleAboutT.getImage(), 0, 0, 1280, 768);
+            renderer.drawImage(backText.getImage(), 170, 360, backText.getWidth(), backText.getHeight());
+
+            if(uifocus == 1){
+
+                renderer.drawImage(playerT.getImage(), 170 + backText.getWidth() + 20, 360 + (backText.getHeight() / 2) - (playerT.getHeight() / 2), playerT.getWidth(), playerT.getHeight(), -90);
+            }
         }
 
     }else{
@@ -421,7 +455,6 @@ void render(){
 
             float playerAngle = getPlayerAngle();
             renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
-            //std::cout << "playerAngle = " << playerAngle << std::endl;
         }
         Bullet *curr = level.getPlayer()->getHead();
         while(curr != nullptr){
@@ -456,6 +489,7 @@ void render(){
         }
 
         renderer.drawImage(scoreText.getImage(), renderer.getScreenWidth() - scoreText.getWidth(), 0, scoreText.getWidth(), scoreText.getHeight());
+        renderer.drawImage(highscoreText.getImage(), renderer.getScreenWidth() - highscoreText.getWidth(), 20, highscoreText.getWidth(), highscoreText.getHeight());
     }
 
     renderer.setRenderDrawColor(renderer.red);
@@ -505,71 +539,7 @@ bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int yt
 
 float getPlayerAngle(){
 
-    int playerx = level.getPlayer()->getX() + (level.getPlayer()->getWidth() / 2);
-    int playery = level.getPlayer()->getY() + (level.getPlayer()->getHeight() / 2);
-    reddotx = playerx;
-    reddoty = playery;
-
-    int xdist = pow(mousex - playerx, 2);
-    int ydist = pow(mousey - playery, 2);
-    float playerAngle = toDegrees(atan2(ydist, xdist));
-
-    if(mousex - playerx < 0 && playery - mousey > 0){
-
-        playerAngle += 180;
-
-    }else if(mousex - playerx > 0 && playery - mousey < 0){
-
-        playerAngle += 180;
-
-    }else{
-
-        playerAngle = 90 - playerAngle;
-    }
-
-    if(mousex - playerx > 0){
-
-        if(playery - mousey < 0){
-
-            playerAngle += 270;
-        }
-
-    }else if(mousex - playerx < 0){
-
-        if(playery - mousey < 0){
-
-            playerAngle += 180;
-
-        }else if(playery - mousey > 0){
-
-            playerAngle += 90;
-        }
-    }
-
-    if(xdist == 0){
-
-        if(playery - mousey < 0){
-
-            playerAngle = 90;
-
-        }else{
-
-            playerAngle = 180;
-        }
-
-    }else if(ydist == 0){
-
-        if(mousex - playerx < 0){
-
-            playerAngle = 180;
-
-        }else if(mousex - playerx > 0){
-
-            playerAngle = 0;
-        }
-    }
-
-    return playerAngle;
+    return toDegrees(atan2((level.getPlayer()->getY() + (level.getPlayer()->getHeight() / 2)) - mousey, (level.getPlayer()->getX() + (level.getPlayer()->getWidth() / 2)) - mousex)) - 90;
 }
 
 float getMonsterAngle(int monsterx, int monstery){
@@ -645,6 +615,7 @@ void reset(){
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
     releaseMonster += 3000;
     score = -1;
+    highscoreText.import(renderer.getRenderer(), "High Score: " + std::to_string(highscore), "monospace.ttf", 20, SDL_Color{255, 255, 0});
 
     gamestate = 1;
 }

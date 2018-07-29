@@ -45,22 +45,21 @@ void Level::update(int delta){
                 //std::cout << "vs bullet: " << curr->getX() << ", " << curr->getY() << ", " << 8 << ", " << 8 << std::endl;
 
                 if(getRectCollision(monsterArray[i].getX(), monsterArray[i].getY(), monsterArray[i].getWidth(), monsterArray[i].getHeight(),
-                    curr->getX(), curr->getY(), 8, 8)){
+                    curr->getX(), curr->getY(), 12, 12)){
 
-                    //sets poof to on and gets spot information
-                    for(int j=0; j< 100 && !poofUsed; j++){
+                    killMonster(i);
                     
+                    for(int j=0; j< 100 && !poofUsed; j++){
+
                         if(!poofArray[j].isUsed()){
-                            
+
                             poofArray[j].setUsed(true);
                             poofArray[j].setX(monsterArray[i].getX());
                             poofArray[j].setY(monsterArray[i].getY());
                             poofUsed = true;
                         }
                     }
-                    
-                    killMonster(i);
-                    
+
                     Bullet *next = curr->getNext();
                     player.killBullet(curr);
                     curr = next;
@@ -80,10 +79,9 @@ void Level::update(int delta){
             
             if (!poofArray[i].keepShowing())
                 poofArray[i].setUsed(false);
-            
         }
+        
     }
-
     player.updatePosition(SDL_GetTicks(), delta, chunkwidth, chunkheight);
 }
 
@@ -151,7 +149,7 @@ Monster* Level::getMonsterArray(){
 }
 
 Poof* Level::getPoofArray(){
-    
+
     return poofArray;
 }
 
@@ -219,9 +217,9 @@ Player* Level::getPlayer(){
 }
 
 Uint32 Level::getSpawnTime(){
-    
+
     int killed = player.getScore();
-    
+
     if(killed < 4)
         return 3000;
     else if(killed < 8)

@@ -100,7 +100,7 @@ void Player::killBullet(Bullet *bullet){
 
 void Player::shoot(float degree){
 
-    Bullet *toMake = new Bullet(getX(), getY(), degree);
+    Bullet *toMake = new Bullet(getX() + (getWidth() / 2), getY() + (getHeight() / 2), degree);
 
     if(head == nullptr){
 
