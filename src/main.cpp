@@ -36,8 +36,9 @@ Texture aboutText;
 Texture descText;
 Texture titleAboutT;
 Texture backText;
+Texture highscoreText;
 
-
+int highscore = 0;
 bool displayFPS = false;
 
 Renderer renderer;
@@ -86,6 +87,7 @@ int main(int argc, char* argv[]){
     playText.import(renderer.getRenderer(), "PLAY", "monospace.ttf", 60, SDL_Color{0, 148, 255});
     aboutText.import(renderer.getRenderer(), "ABOUT", "monospace.ttf", 60, SDL_Color{0, 148, 255});
     backText.import(renderer.getRenderer(), "BACK", "monospace.ttf", 60, SDL_Color{0, 148, 255});
+    highscoreText.import(renderer.getRenderer(), "High Score: " + std::to_string(highscore), "monospace.ttf", 20, SDL_Color{255, 255, 0});
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -355,6 +357,12 @@ void update(int delta){
 
             gameOverY += 3;
         }
+
+        if(score > highscore){
+
+            highscoreText.import(renderer.getRenderer(), "NEW HIGH SCORE!", "monospace.ttf", 20, SDL_Color{255, 255, 0});
+            highscore = score;
+        }
     }
 
     updates += delta;
@@ -481,6 +489,7 @@ void render(){
         }
 
         renderer.drawImage(scoreText.getImage(), renderer.getScreenWidth() - scoreText.getWidth(), 0, scoreText.getWidth(), scoreText.getHeight());
+        renderer.drawImage(highscoreText.getImage(), renderer.getScreenWidth() - highscoreText.getWidth(), 20, highscoreText.getWidth(), highscoreText.getHeight());
     }
 
     renderer.setRenderDrawColor(renderer.red);
@@ -606,6 +615,7 @@ void reset(){
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
     releaseMonster += 3000;
     score = -1;
+    highscoreText.import(renderer.getRenderer(), "High Score: " + std::to_string(highscore), "monospace.ttf", 20, SDL_Color{255, 255, 0});
 
     gamestate = 1;
 }
