@@ -13,7 +13,7 @@ Monster::Monster(){
     setDy(0);
     health = 3;
     setImageCode(MONSTER, 48, 48);
-    mSpeed = 1;
+    mSpeed = 4;
     inUse = false;
 }
 
@@ -25,6 +25,11 @@ int Monster::getHealth(){
 bool Monster::beingUsed(){
     
     return inUse;
+}
+
+int Monster::getSpeed(){
+    
+    return mSpeed;
 }
 
 void Monster::setHealth(int value){

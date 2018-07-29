@@ -117,7 +117,7 @@ Monster* Level::getMonsterArray(){
 void Level::updateMonsterDir(){
 
     
-    int xDif, yDif, pos;
+    int xDif, yDif, pos(0);
     
     for(int i=0; i<100; i++){
 
@@ -126,11 +126,48 @@ void Level::updateMonsterDir(){
             xDif = (player.getX() - monsterArray[i].getX());
             yDif = (player.getY() - monsterArray[i].getY());
             
+            if(xDif == 0)
+                xDif = 1;
+            
+            if(yDif == 0)
+                yDif = 1;
             
             if(xDif > 0 && yDif < 0)
-                
+                pos = 1;
+            
+            if(xDif < 0 && yDif < 0)
+                pos = 2;
+            
+            if(xDif <0 && yDif > 0)
+                pos = 3;
+            
+            if (xDif < 0)
+                xDif = xDif * -1;
+            if(yDif < 0)
+                yDif = yDif * -1;
             
             double radi = atan(xDif/yDif);
+            
+            monsterArray[i].setDx(monsterArray[i].getSpeed() * sin(radi));
+            monsterArray[i].setDy(monsterArray[i].getSpeed() * cos(radi));
+            
+            switch (pos) {
+                case 1:
+                    monsterArray[i].setDy(-1 * monsterArray[i].getDY());
+                    break;
+                    
+                case 2:
+                    monsterArray[i].setDx(-1 * monsterArray[i].getDX());
+                    monsterArray[i].setDy(-1 * monsterArray[i].getDY());
+                    break;
+                    
+                case 3:
+                    monsterArray[i].setDx(-1 * monsterArray[i].getDX());
+                    break;
+                    
+                default:
+                    break;
+            }
         }
     }
 }
