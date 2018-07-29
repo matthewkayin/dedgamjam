@@ -23,6 +23,8 @@ Texture bulletT;
 Texture fpsText;
 Texture upsText;
 Texture handRockT;
+Texture handPaperT;
+Texture handScissorT;
 
 bool displayFPS = false;
 
@@ -51,6 +53,8 @@ int main(int argc, char* argv[]){
     cursorT.import(renderer.getRenderer(), "res/gfx/cursor.png");
     bulletT.import(renderer.getRenderer(), "res/gfx/bullet.png");
     handRockT.import(renderer.getRenderer(), "res/gfx/rockhand.png");
+    handPaperT.import(renderer.getRenderer(), "res/gfx/paperhand.png");
+    handScissorT.import(renderer.getRenderer(), "res/gfx/scissorhand.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -119,12 +123,12 @@ int main(int argc, char* argv[]){
             The update timer works based off of how much updates should have occured so we need the
             start time to happen here
         */
-
+        
         if((currentTime - releaseMonster) >= 3000){
             releaseMonster = currentTime;
             level.createMonster();
         }
-
+        
         loopStart = SDL_GetTicks();
         level.updateMonsterDir();
         
@@ -250,7 +254,7 @@ void render(){
     int dx = 0;
     int dy = 0;
 
-    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (768 / grassT.getWidth()); i++){
+    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
 
         renderer.drawImage(grassT.getImage(), dx, dy, grassT.getWidth(), grassT.getHeight());
 
@@ -263,12 +267,19 @@ void render(){
     }
 
     float playerAngle = getPlayerAngle();
-
+    
     Monster* hold = level.getMonsterArray();
     for(int i=0; i<100; i++){
-
-        if(hold[i].beingUsed())
-            renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+        
+        if(hold[i].beingUsed()){
+            
+            if(i % 3 == 0)
+                renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+            if(i % 3 == 1)
+                renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth());
+            if(i % 3 == 3)
+                renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth());
+        }
     }
 
     renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
