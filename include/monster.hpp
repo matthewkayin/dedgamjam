@@ -3,6 +3,7 @@
 
 #include "Entity.hpp"
 #include <cstdlib>
+#include <cmath>
 
 class Monster : public Entity{
 public:

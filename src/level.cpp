@@ -12,6 +12,8 @@ Level::Level(int screenwidth, int screenheight){
     player = Player(SDL_GetTicks());
     player.setX((screenwidth + player.getWidth()) / 2);
     player.setY((screenheight + player.getHeight()) / 2);
+    
+    srand(time(NULL));
 }
 
 Level::~Level(){
@@ -92,7 +94,7 @@ Monster* Level::getMonsterArray(){
 
 void Level::updateMonsterDir(){
     
-    int xDif, yDif;
+    int xDif, yDif, pos;
     
     for(int i=0; i<100; i++){
         
@@ -101,7 +103,10 @@ void Level::updateMonsterDir(){
             xDif = (player.getX() - monsterArray[i].getX());
             yDif = (player.getY() - monsterArray[i].getY());
             
+            if(xDif > 0 && yDif < 0)
+                
             
+            double radi = atan(xDif/yDif);
         }
     }
 }
