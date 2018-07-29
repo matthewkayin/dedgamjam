@@ -15,12 +15,18 @@ public:
     void shoot(float degree);
     Bullet* getHead();
     void killBullet(Bullet *bullet);
+    bool getDead() const;
+    void setDead(bool value);
+    int getScore() const;
+    void countScore();
 
 private:
     Bullet *head;
     int maxPlayerSpeed;
     int playerSpeed = 5;
     Uint32 acceltick;
+    bool isDead;
+    int score;
 };
 
 

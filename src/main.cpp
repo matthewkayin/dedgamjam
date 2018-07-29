@@ -15,6 +15,7 @@ void update(int delta);
 void render();
 bool getRectangleCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo);
 float getPlayerAngle();
+void reset();
 
 Texture grassT;
 Texture playerT;
@@ -22,7 +23,9 @@ Texture cursorT;
 Texture bulletT;
 Texture fpsText;
 Texture upsText;
+Texture scoreText;
 Texture handRockT;
+Texture gameoverT;
 
 bool displayFPS = false;
 
@@ -34,9 +37,16 @@ int mousey;
 int recentY = 0;
 int recentX = 0;
 
+int gamestate;
+int gameOverX;
+int gameOverY;
+
 int updates;
 int frames;
 bool running;
+
+Uint32 releaseMonster = 0;
+int score = -1;
 
 int main(int argc, char* argv[]){
 
@@ -51,8 +61,13 @@ int main(int argc, char* argv[]){
     cursorT.import(renderer.getRenderer(), "res/gfx/cursor.png");
     bulletT.import(renderer.getRenderer(), "res/gfx/bullet.png");
     handRockT.import(renderer.getRenderer(), "res/gfx/rockhand.png");
+    gameoverT.import(renderer.getRenderer(), "res/gfx/gameover.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
+
+    gamestate = 1;
+    gameOverX = renderer.getScreenWidth() / 2;
+    gameOverY = 0;
 
     //timing constants
     const Uint32 SECOND = 1000;
@@ -71,7 +86,6 @@ int main(int argc, char* argv[]){
     Uint32 loopStart = 0;
     Uint32 loopDump = 0;
     Uint32 secDump = 0;
-    Uint32 releaseMonster = 0;
 
     fpsText.import(renderer.getRenderer(), "FPS: " + std::to_string(fps), "monospace.ttf", 16, SDL_Color{0, 255, 0});
     upsText.import(renderer.getRenderer(), "UPS: " + std::to_string(ups), "monospace.ttf", 16, SDL_Color{0, 255, 0});
@@ -120,14 +134,8 @@ int main(int argc, char* argv[]){
             start time to happen here
         */
 
-        if((currentTime - releaseMonster) >= 3000){
-            releaseMonster = currentTime;
-            level.createMonster();
-        }
-
         loopStart = SDL_GetTicks();
-        level.updateMonsterDir();
-        
+
         //actual calling of game functions
         input();
         update(delta);
@@ -193,7 +201,14 @@ void input(){
 
         if(e.type == SDL_MOUSEBUTTONDOWN){
 
-            level.getPlayer()->shoot(getPlayerAngle());
+            if(gamestate == 1){
+
+                level.getPlayer()->shoot(getPlayerAngle());
+
+            }else if(gamestate == 2){
+
+                reset();
+            }
         }
     }
 
@@ -237,7 +252,36 @@ void input(){
 
 void update(int delta){
 
-    level.update(delta);
+    if(gamestate == 0){
+
+        //title menu
+
+    }else if(gamestate == 1){
+
+        level.update(delta);
+
+        if((SDL_GetTicks() - releaseMonster) >= 3000){
+            releaseMonster = SDL_GetTicks();
+            level.createMonster();
+        }
+        level.updateMonsterDir();
+
+        if(level.getPlayer()->getDead()){
+
+            gamestate = 2;
+        }
+
+    }else if(gamestate == 2){
+
+        if(abs(gameOverY - (renderer.getScreenHeight() / 2)) <= 5){
+
+            gameOverY = renderer.getScreenHeight() / 2;
+
+        }else{
+
+            gameOverY += 3;
+        }
+    }
 
     updates += delta;
 }
@@ -246,61 +290,81 @@ void render(){
 
     renderer.clear();
 
-    //draw the ground
-    int dx = 0;
-    int dy = 0;
+    if(gamestate == 0){
 
-    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (768 / grassT.getWidth()); i++){
+        //render title menu
 
-        renderer.drawImage(grassT.getImage(), dx, dy, grassT.getWidth(), grassT.getHeight());
+    }else{
 
-        dx += 64;
-        if(dx >= renderer.getScreenWidth()){
+        if(score != level.getPlayer()->getScore()){
 
-            dx = 0;
-            dy += 64;
-        }
-    }
-
-    float playerAngle = getPlayerAngle();
-
-    Monster* hold = level.getMonsterArray();
-    for(int i=0; i<100; i++){
-
-        if(hold[i].beingUsed())
-            renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
-    }
-
-    renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
-    Bullet *curr = level.getPlayer()->getHead();
-    while(curr != nullptr){
-
-        /*float adjustedDegree = curr->getDegree();
-        if(adjustedDegree >= 360){
-
-            adjustedDegree -= 360;
-
-        }else if(adjustedDegree < 0){
-
-            adjustedDegree += 360;
-        }*/
-        float adjustedDegree = curr->getDegree();
-        adjustedDegree -= 90;
-        if(adjustedDegree >= 360){
-
-            adjustedDegree -= 360;
-
-        }else if(adjustedDegree < 0){
-
-            adjustedDegree += 360;
+            score = level.getPlayer()->getScore();
+            scoreText.import(renderer.getRenderer(), "SCORE: " + std::to_string(score), "monospace.ttf", 20, SDL_Color{255, 255, 0});
         }
 
-        renderer.drawImage(bulletT.getImage(), curr->getX(), curr->getY(), bulletT.getWidth(), bulletT.getHeight(), -adjustedDegree);
-        curr = curr->getNext();
+        //draw the ground
+        int dx = 0;
+        int dy = 0;
+
+        for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (768 / grassT.getWidth()); i++){
+
+            renderer.drawImage(grassT.getImage(), dx, dy, grassT.getWidth(), grassT.getHeight());
+
+            dx += 64;
+            if(dx >= renderer.getScreenWidth()){
+
+                dx = 0;
+                dy += 64;
+            }
+        }
+
+        Monster* hold = level.getMonsterArray();
+        for(int i=0; i<100; i++){
+
+            if(hold[i].beingUsed())
+                renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+        }
+
+        if(!level.getPlayer()->getDead()){
+
+            float playerAngle = getPlayerAngle();
+            renderer.drawImage(playerT.getImage(), level.getPlayer()->getX(), level.getPlayer()->getY(), playerT.getWidth(), playerT.getHeight(), playerAngle);
+        }
+        Bullet *curr = level.getPlayer()->getHead();
+        while(curr != nullptr){
+
+            /*float adjustedDegree = curr->getDegree();
+            if(adjustedDegree >= 360){
+
+                adjustedDegree -= 360;
+
+            }else if(adjustedDegree < 0){
+
+                adjustedDegree += 360;
+            }*/
+            float adjustedDegree = curr->getDegree();
+            adjustedDegree -= 90;
+            if(adjustedDegree >= 360){
+
+                adjustedDegree -= 360;
+
+            }else if(adjustedDegree < 0){
+
+                adjustedDegree += 360;
+            }
+
+            renderer.drawImage(bulletT.getImage(), curr->getX(), curr->getY(), bulletT.getWidth(), bulletT.getHeight(), -adjustedDegree);
+            curr = curr->getNext();
+        }
+
+        if(gamestate == 2){
+
+            renderer.drawImage(gameoverT.getImage(), gameOverX - (gameoverT.getWidth() / 2), gameOverY - (gameoverT.getHeight() / 2), gameoverT.getWidth(), gameoverT.getHeight());
+        }
+
+        renderer.drawImage(scoreText.getImage(), renderer.getScreenWidth() - scoreText.getWidth(), 0, scoreText.getWidth(), scoreText.getHeight());
+        renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
     }
-
-
-    renderer.drawImage(cursorT.getImage(), mousex - (cursorT.getWidth() / 2), mousey - (cursorT.getHeight() / 2), cursorT.getWidth(), cursorT.getHeight());
 
     if(displayFPS){
 
@@ -407,4 +471,14 @@ float getPlayerAngle(){
     }
 
     return playerAngle;
+}
+
+void reset(){
+
+    gameOverY = 0;
+    level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
+    releaseMonster += 3000;
+    score = -1;
+
+    gamestate = 1;
 }

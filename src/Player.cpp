@@ -9,6 +9,8 @@ Player::Player(){
     playerSpeed = 5;
     acceltick = 0;
     head = nullptr;
+    isDead = false;
+    score = 0;
 }
 
 Player::Player(Uint32 currentTime){
@@ -20,6 +22,8 @@ Player::Player(Uint32 currentTime){
     playerSpeed = 5;
     acceltick = currentTime;
     head = nullptr;
+    isDead = false;
+    score = 0;
 }
 
 void Player::updatePosition(Uint32 currentTime, int delta, int screenwidth, int screenheight){
@@ -115,7 +119,27 @@ void Player::shoot(float degree){
     }
 }
 
+bool Player::getDead() const{
+
+    return isDead;
+}
+
+void Player::setDead(bool value){
+
+    isDead = value;
+}
+
 int Player::getSpeed() const{
 
     return playerSpeed;
+}
+
+int Player::getScore() const{
+
+    return score;
+}
+
+void Player::countScore(){
+
+    score++;
 }
