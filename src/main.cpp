@@ -264,7 +264,8 @@ void update(int delta){
 
         level.update(delta);
 
-        if((SDL_GetTicks() - releaseMonster) >= 3000){
+        
+        if((SDL_GetTicks() - releaseMonster) >= level.getSpawnTime()){
             releaseMonster = SDL_GetTicks();
             level.createMonster();
         }
