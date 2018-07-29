@@ -37,16 +37,26 @@ void Level::update(int delta){
 
             Bullet *curr = player.getHead();
 
+            //std::cout << "checking bullet collisions for monster #" << i << std::endl;
             while(curr != nullptr){
+
+                //std::cout << "monster: " << monsterArray[i].getX() << ", " << monsterArray[i].getY() << ", " << monsterArray[i].getWidth() << ", " << monsterArray[i].getHeight() << std::endl;
+                //std::cout << "vs bullet: " << curr->getX() << ", " << curr->getY() << ", " << 8 << ", " << 8 << std::endl;
 
                 if(getRectCollision(monsterArray[i].getX(), monsterArray[i].getY(), monsterArray[i].getWidth(), monsterArray[i].getHeight(),
                     curr->getX(), curr->getY(), 8, 8)){
 
                     killMonster(i);
+                    Bullet *next = curr->getNext();
+                    player.killBullet(curr);
+                    curr = next;
                     break;
                 }
 
-                curr = curr->getNext();
+                if(curr != nullptr){
+
+                    curr = curr->getNext();
+                }
             }
         }
     }
@@ -56,7 +66,7 @@ void Level::update(int delta){
 
 void Level::createMonster(){
 
-    bool foundMonster(false);
+    bool foundMonster = false;
 
     int i;
 
@@ -100,6 +110,8 @@ void Level::createMonster(){
             default:
                 break;
         }
+
+        std::cout << i << ", " << monsterArray[i].getX() << ", " << monsterArray[i].getY() << std::endl;
     }
 }
 
@@ -142,6 +154,11 @@ Player* Level::getPlayer(){
 }
 
 bool Level::getRectCollision(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
+
+    return xIntersectY(x, y, width, height, xtwo, ytwo, widthtwo, heighttwo) || xIntersectY(xtwo, ytwo, widthtwo, heighttwo, x, y, width, height);
+}
+
+bool Level::xIntersectY(int x, int y, int width, int height, int xtwo, int ytwo, int widthtwo, int heighttwo){
 
     int xpoint = x;
     int ypoint = y;

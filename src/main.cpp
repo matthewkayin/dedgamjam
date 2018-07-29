@@ -119,12 +119,12 @@ int main(int argc, char* argv[]){
             The update timer works based off of how much updates should have occured so we need the
             start time to happen here
         */
-        
+
         if((currentTime - releaseMonster) >= 3000){
             releaseMonster = currentTime;
             level.createMonster();
         }
-        
+
         loopStart = SDL_GetTicks();
 
         //actual calling of game functions
@@ -249,7 +249,7 @@ void render(){
     int dx = 0;
     int dy = 0;
 
-    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (renderer.getScreenHeight() / grassT.getWidth()); i++){
+    for(int i = 0; i < (renderer.getScreenWidth() / grassT.getWidth()) * (768 / grassT.getWidth()); i++){
 
         renderer.drawImage(grassT.getImage(), dx, dy, grassT.getWidth(), grassT.getHeight());
 
@@ -262,10 +262,10 @@ void render(){
     }
 
     float playerAngle = getPlayerAngle();
-    
+
     Monster* hold = level.getMonsterArray();
     for(int i=0; i<100; i++){
-        
+
         if(hold[i].beingUsed())
             renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
     }
