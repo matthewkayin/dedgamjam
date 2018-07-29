@@ -26,6 +26,8 @@ Texture upsText;
 Texture scoreText;
 Texture handRockT;
 Texture gameoverT;
+Texture handPaperT;
+Texture handScissorT;
 
 bool displayFPS = false;
 
@@ -62,6 +64,8 @@ int main(int argc, char* argv[]){
     bulletT.import(renderer.getRenderer(), "res/gfx/bullet.png");
     handRockT.import(renderer.getRenderer(), "res/gfx/rockhand.png");
     gameoverT.import(renderer.getRenderer(), "res/gfx/gameover.png");
+    handPaperT.import(renderer.getRenderer(), "res/gfx/paperhand.png");
+    handScissorT.import(renderer.getRenderer(), "res/gfx/scissorhand.png");
 
     level = Level(renderer.getScreenWidth(), renderer.getScreenHeight());
 
@@ -321,8 +325,15 @@ void render(){
         Monster* hold = level.getMonsterArray();
         for(int i=0; i<100; i++){
 
-            if(hold[i].beingUsed())
-                renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+            if(hold[i].beingUsed()){
+
+                if(i % 3 == 0)
+                    renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth());
+                if(i % 3 == 1)
+                    renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth());
+                if(i % 3 == 3)
+                    renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth());
+            }
         }
 
         if(!level.getPlayer()->getDead()){
