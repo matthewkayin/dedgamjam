@@ -16,19 +16,19 @@ public:
     Bullet* getPrev() const;
     void setNext(Bullet *other);
     void setPrev(Bullet *other);
-    int getX() const;
-    int getY() const;
-    int getDx() const;
-    int getDy() const;
+    float getX() const;
+    float getY() const;
+    float getDx() const;
+    float getDy() const;
     float getDegree() const;
 private:
     const float SPEED = 15;
     Bullet *next;
     Bullet *prev;
-    int x;
-    int y;
-    int dx;
-    int dy;
+    float x;
+    float y;
+    float dx;
+    float dy;
     float degree;
 };
 

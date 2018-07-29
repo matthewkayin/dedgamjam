@@ -479,7 +479,8 @@ void render(){
                 adjustedDegree += 360;
             }
 
-            renderer.drawImage(bulletT.getImage(), curr->getX(), curr->getY(), bulletT.getWidth(), bulletT.getHeight(), -adjustedDegree);
+            std::cout << "bullet coords" << curr->getX() << ", " << curr->getY() << std::endl;
+            renderer.drawImage(bulletT.getImage(), (int)(curr->getX()), (int)(curr->getY()), bulletT.getWidth(), bulletT.getHeight(), -adjustedDegree);
             curr = curr->getNext();
         }
 

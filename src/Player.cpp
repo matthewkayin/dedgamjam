@@ -55,8 +55,8 @@ void Player::updatePosition(Uint32 currentTime, int delta, int screenwidth, int 
 
         curr->updatePosition(delta);
 
-        if( ( curr->getX()  + 4 <= 0 || curr->getX() >= screenwidth ) &&
-            ( curr->getY() + 8 <= 0 || curr->getY() >= screenheight ) ){
+        if( ( curr->getX()  + 12 <= 0 || curr->getX() >= screenwidth ) &&
+            ( curr->getY() + 12 <= 0 || curr->getY() >= screenheight ) ){
 
                 Bullet *toSet = nullptr;
                 if(curr->getNext() != nullptr){

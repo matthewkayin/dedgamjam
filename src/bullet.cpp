@@ -47,22 +47,22 @@ void Bullet::setPrev(Bullet *other){
     prev = other;
 }
 
-int Bullet::getX() const{
+float Bullet::getX() const{
 
     return x;
 }
 
-int Bullet::getY() const{
+float Bullet::getY() const{
 
     return y;
 }
 
-int Bullet::getDx() const{
+float Bullet::getDx() const{
 
     return dx;
 }
 
-int Bullet::getDy() const{
+float Bullet::getDy() const{
 
     return dy;
 }

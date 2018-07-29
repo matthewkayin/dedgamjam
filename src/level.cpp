@@ -45,7 +45,7 @@ void Level::update(int delta){
                 //std::cout << "vs bullet: " << curr->getX() << ", " << curr->getY() << ", " << 8 << ", " << 8 << std::endl;
 
                 if(getRectCollision(monsterArray[i].getX(), monsterArray[i].getY(), monsterArray[i].getWidth(), monsterArray[i].getHeight(),
-                    curr->getX(), curr->getY(), 12, 12)){
+                    (int)(curr->getX()), (int)(curr->getY()), 12, 12)){
 
                     killMonster(i);
 
