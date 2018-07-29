@@ -32,6 +32,11 @@ int Monster::getSpeed(){
     return mSpeed;
 }
 
+int Monster::getMonsterType(){
+    
+    return monsterType;
+}
+
 void Monster::setHealth(int value){
 
     health = value;
@@ -45,6 +50,11 @@ void Monster::setUse(bool value){
 void Monster::setDegree(float value){
 
     degree = value;
+}
+
+void Monster::setMonsterType(int value){
+    
+    monsterType = value;
 }
 
 float Monster::getDegree() const{

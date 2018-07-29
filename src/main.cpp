@@ -475,12 +475,22 @@ void render(){
 
                 adjustedDegree = getMonsterAngle(hold[i].getX(), hold[i].getY());
 
-                if(i % 3 == 0)
-                    renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth(), adjustedDegree);
-                if(i % 3 == 1)
-                    renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth(), adjustedDegree);
-                if(i % 3 == 2)
-                    renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth(), adjustedDegree);
+                switch (hold[i].getMonsterType()) {
+                    case 0:
+                        renderer.drawImage(handRockT.getImage(), hold[i].getX(), hold[i].getY(), handRockT.getHeight(), handRockT.getWidth(), adjustedDegree);
+                        break;
+                        
+                    case 1:
+                        renderer.drawImage(handScissorT.getImage(), hold[i].getX(), hold[i].getY(), handScissorT.getHeight(), handScissorT.getWidth(), adjustedDegree);
+                        break;
+                        
+                    case 2:
+                        renderer.drawImage(handPaperT.getImage(), hold[i].getX(), hold[i].getY(), handPaperT.getHeight(), handPaperT.getWidth(), adjustedDegree);
+                        break;
+                        
+                    default:
+                        break;
+                }
             }
 
             if(holdPoof[i].isUsed()){

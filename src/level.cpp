@@ -107,6 +107,7 @@ void Level::createMonster(){
     for(int i=0; i<100 && !foundMonster; i++){
 
         if(!monsterArray[i].beingUsed()){
+            monsterArray[i].setMonsterType(rand() % 3);
             monsterArray[i].setUse(true);
             foundMonster = true;
             index = i;

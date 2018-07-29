@@ -12,10 +12,12 @@ public:
     int getHealth();
     bool beingUsed();
     int getSpeed();
+    int getMonsterType();
 
     void setHealth(int value);
     void setUse(bool value);
     void setDegree(float value);
+    void setMonsterType(int value);
     float getDegree() const;
 
 private:
@@ -23,6 +25,7 @@ private:
     int mSpeed;
     bool inUse;
     float degree;
+    int monsterType;
 };
 
 #endif /* monster_h */
